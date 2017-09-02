@@ -1,0 +1,14 @@
+﻿body {
+      #texto{
+              color: aabbcc;
+          }
+}
+
+
+#textoConstulta{
+    text-align:center;
+}
+
+.textoTop{
+        vertical-align: top;
+}
