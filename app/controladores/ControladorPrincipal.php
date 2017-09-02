@@ -11,7 +11,7 @@ final class ControladorPrincipal extends Controlador {
         require_once 'app/vistas/Bienvenida.php';
         $M = new ModeloPrincipal("");
         $fecha = $M->getFecha();
-        echo $fecha;
+       // echo $fecha;
 
         $template = file_get_contents('web/bienvenida.html');
         $V = new Bienvendia($template);
