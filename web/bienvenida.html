@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+    
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{Título de la página}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="shortcut icon" href="web/img/favicon.ico" type="image/x-icon"/>
+        <link rel="stylesheet" type="text/css" href="web/css/estilos2.css">
+    </head>
+    <body>   
+        <div id="contenido" class="container">
+            <div id="Encabezado"><div id="encabezado_titulo"></div><div id="encabezado_img"><img src="web/img/logo-01.png"></div></div>
+            <div id="Titulo">
+            <img src="web/img/Linea_celeste-01.png"  id="linea1">
+            </div>
+            <div id="FechaHora"><p class="texto1" id="fechaHora">{fechaHora}</p></div>
+
+
+            <div id="Principal">
+                <form id="frmPpal" name="frmPpal" action="index.php" method="post">
+                    <input type="hidden" id="Controlador" name="Controlador" value="ControladorPrincipal" >
+                    <input type="hidden" id="accion" name="accion" value="pantallaLogin" >
+                    <br><br><br><br><br><br>
+                    <div id="bienvenida1">
+                    <img src="web/img/Bienvenidos-01.png" id="bienvenida" name="bienvenida">
+                    </div>
+                    <br><br><br>
+                    <div id="msgError" >{mensajeError}</div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
