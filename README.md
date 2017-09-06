@@ -1,3 +1,3 @@
 # Biblio!
-# Gestor de biblioteca.
-# Para materia Práctica Profesional.
+Gestor de biblioteca.
+Práctica Profesional 2017.
