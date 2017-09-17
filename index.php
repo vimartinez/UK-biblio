@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-if (!empty($_POST['Controlador']))
-        $controlador = $_POST['Controlador'];
+if (!empty($_POST['controlador']))
+        $controlador = $_POST['controlador'];
     else
         $controlador = "ControladorPrincipal";
 if (!empty($_POST['metodo']))
