@@ -1,3 +1,6 @@
 # Biblio!
 Gestor de biblioteca.
-Pr·ctica Profesional 2017.
+
+Pr√°ctica Profesional 2017.
+
+Universidad Kennedy
