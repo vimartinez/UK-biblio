@@ -4,17 +4,26 @@ require_once 'app/inc/Modelo.php';
 
 final class ModeloPrincipal extends Modelo {
 
-    public function getParametroSI() {
-        $client = $this->conectarJBoss();
-        $param = array();
-        $result = $client->call('getParametroSI', $param, '', '', false, true);
-        if (!$result) {
-            echo "<span style='color:white;'>No se puede ejecutar getparametro en JBOSS</span>";
-            //   die(); //completar
+    protected $server = "127.0.0.1";
+    protected $bd = "biblio";
+    protected $usr ="root";
+    protected $pass = "";
+
+    public function conectarBD(){
+        $conn = new mysqli($this->server, $this->usr, $this->pass, $this->bd);
+        if (mysqli_connect_errno()) {
+            printf("Falló la conexión: %s\n", mysqli_connect_error());
+            exit();
         }
-        $strRes = $result['return']['valor'];
-        return $strRes;
+        return $conn;
     }
+
+    public function desconectarBD($mysqli){
+        $mysqli->close();
+    }
+
+
+
 
     public function getParametro($hash, $parametro) {
         $client = $this->conectarJBoss();
@@ -31,6 +40,22 @@ final class ModeloPrincipal extends Modelo {
             //   die(); //completar
         }
         return $result['return'];
+    }
+
+    public function getQuery() {
+        
+        $conn = $this->conectarBD();
+       
+        $consulta = "SELECT * from libros";
+
+        if ($resultado = $conn->query($consulta)) {
+            while ($fila = $resultado->fetch_row()) {
+                var_dump($fila);
+            }
+
+            $resultado->close();
+        }
+        $this->desconectarBD($conn);
     }
 
     public function iniciarSesion($Usu, $param1) {

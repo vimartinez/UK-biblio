@@ -33,7 +33,7 @@ public function mostrarHTML() {
                                 <div id="msgError" >{mensajeError}</div>
                             </form>
                             <h2>Bienvenidos a Biblio!</h2>
-                            <img class="alignleft" src="img/pic01.jpg" alt="" />
+                            <img class="alignleft" src="web/img/pic01.jpg" alt="" />
                             <p>
                                 Biblio! es un sistema de administración de bibliotecas, permite gestionar el catálogo, ingresar nuevos socios, registrar el préstamo y la devolución de libros físicos y visualizar contenidos digitales.
                             </p>
