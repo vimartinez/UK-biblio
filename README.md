@@ -1,6 +1,7 @@
 # Biblio!
 Gestor de biblioteca.
 
-Práctica Profesional 2017.
+Trabajo realizado para la materia Práctica Profesional año 2017.
 
 Universidad Kennedy
+Buenos Aires - Argentina
