@@ -124,8 +124,8 @@ final class ModeloPrincipal extends Modelo {
     public function getFuncionalidades($idPerfil){
         $sql = "select f.func_ID, f.descripcion, f.comentario from perf_funcionalidad pf
                 inner join funcionalidades f ON pf.func_ID = f.func_ID
-                WHERE per_ID =" . $idPerfil .
-                " AND pf.eliminado =0;";
+                WHERE pf.per_ID =$idPerfil
+                 AND pf.eliminado =0;";
         $res = array();
         $conn = $this->conectarBD();
         if ($resultado = $conn->query($sql)) {

@@ -6,27 +6,17 @@ protected $mensaje="";
 
 public function mostrarHTML() {
     $resultados = $this->getData();
-    $tabla = '<table style="width:70%">
-                  <tr>
-                    <th>Nombre</th> 
-                    <th>Comentario</th>
-                  </tr>';
-    if (isset($resultados[1])) {
+    $tabla = '<ul class="list">';
+    if (isset($resultados[0][1])) {
         foreach ($resultados as $clave ) {
-            $tabla = $tabla ."<tr>
-                                <td>$clave[1]</td> 
-                                <td>$clave[2]</td>
-                              </tr>";
+            $tabla = $tabla .'<li ><a href="#" title="'.$clave[2].'">'.$clave[1].'</a></li>';
         }
     }
-    $tabla = $tabla . '</table>';
+    $tabla = $tabla . '</ul>';
         $diccionario = array(
             'areaTrabajo' => '
                 <div class="box">
-                    <h2>Contenido disponible para socios:</h2>              
-                    <p>
-                        Para asociarte x... <br />
-                    </p> '
+                    <h2>Contenido disponible para socios:</h2> '
                     .$tabla.
                 '</div>
                 ',

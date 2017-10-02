@@ -212,6 +212,7 @@ ul.list li.first {
 	text-shadow: 1px 1px 0px #ffffff;
 	border-bottom-left-radius: 6px;
 	border-bottom-right-radius: 6px;
+	min-height: 500px;
 }
 
 #col1 {

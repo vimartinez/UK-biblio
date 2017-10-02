@@ -102,7 +102,15 @@ final class ControladorPrincipal extends Controlador {
         require_once 'app/vistas/Admin.php';
         $template = file_get_contents('web/principal.html');
         $V = new Admin($template);
-        if (isset($_SESSION['datosUsu'])) $V->setinfoUsu($_SESSION['datosUsu']);
+        if (isset($_SESSION['datosUsu'])){
+            $M = new ModeloPrincipal("");
+            $res = $M->getFuncionalidades($_SESSION['idPerfil']);
+            $V->setinfoUsu($_SESSION['datosUsu']);
+        }
+        else {
+            $res = "Debe ingresar al sistema para visualizar estos contenidos";
+        }
+        $V->setData($res);
         $V->mostrarHTML();
     }
     public function socios() {
@@ -111,11 +119,11 @@ final class ControladorPrincipal extends Controlador {
         $V = new Socios($template);
         if (isset($_SESSION['datosUsu'])){
             $M = new ModeloPrincipal("");
-            $res = $M->getFuncionalidades($_SESSION['idPerfil']);
+            $res = $M->getFuncionalidades(3);
             $V->setinfoUsu($_SESSION['datosUsu']);
         }
         else {
-            $res = "Debe ingresar al sistema para visualizar los contenidos";
+            $res = "Debe ingresar al sistema para visualizar estos contenidos";
         }
         $V->setData($res);
         $V->mostrarHTML();
