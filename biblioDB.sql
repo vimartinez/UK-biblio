@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-09-2017 a las 19:51:03
+-- Tiempo de generación: 02-10-2017 a las 05:02:09
 -- Versión del servidor: 10.1.26-MariaDB
 -- Versión de PHP: 7.1.8
 
@@ -31,11 +31,10 @@ USE `biblio`;
 --
 
 DROP TABLE IF EXISTS `autores`;
-CREATE TABLE IF NOT EXISTS `autores` (
+CREATE TABLE `autores` (
   `aut_ID` int(11) NOT NULL,
   `nombreApe` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `nacionalidad` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`aut_ID`)
+  `nacionalidad` varchar(50) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -52,13 +51,11 @@ INSERT INTO `autores` (`aut_ID`, `nombreApe`, `nacionalidad`) VALUES
 --
 
 DROP TABLE IF EXISTS `catalogo`;
-CREATE TABLE IF NOT EXISTS `catalogo` (
+CREATE TABLE `catalogo` (
   `cat_ID` int(11) NOT NULL,
   `lib_ID` int(11) NOT NULL,
   `cantTotal` int(11) NOT NULL,
-  `cantDisponible` int(11) NOT NULL,
-  PRIMARY KEY (`cat_ID`),
-  KEY `catalogo_libro` (`lib_ID`)
+  `cantDisponible` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -68,10 +65,9 @@ CREATE TABLE IF NOT EXISTS `catalogo` (
 --
 
 DROP TABLE IF EXISTS `estados_libros`;
-CREATE TABLE IF NOT EXISTS `estados_libros` (
+CREATE TABLE `estados_libros` (
   `est_ID` int(11) NOT NULL,
-  `descripcion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`est_ID`)
+  `descripcion` varchar(50) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -93,11 +89,10 @@ INSERT INTO `estados_libros` (`est_ID`, `descripcion`) VALUES
 --
 
 DROP TABLE IF EXISTS `funcionalidades`;
-CREATE TABLE IF NOT EXISTS `funcionalidades` (
+CREATE TABLE `funcionalidades` (
   `func_ID` int(11) NOT NULL,
   `descripcion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `comentario` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`func_ID`)
+  `comentario` varchar(100) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -107,7 +102,8 @@ CREATE TABLE IF NOT EXISTS `funcionalidades` (
 INSERT INTO `funcionalidades` (`func_ID`, `descripcion`, `comentario`) VALUES
 (1, 'Alta de Libros', ''),
 (2, 'Alta de Autores', ''),
-(3, 'Alta de socios', '');
+(3, 'Alta de socios', ''),
+(4, 'Reservar libros', 'Reservar un libro para retiro en sucursal (validez 3 dias)');
 
 -- --------------------------------------------------------
 
@@ -116,7 +112,7 @@ INSERT INTO `funcionalidades` (`func_ID`, `descripcion`, `comentario`) VALUES
 --
 
 DROP TABLE IF EXISTS `libros`;
-CREATE TABLE IF NOT EXISTS `libros` (
+CREATE TABLE `libros` (
   `lib_ID` int(11) NOT NULL,
   `aut_ID` int(11) NOT NULL,
   `est_ID` int(11) NOT NULL,
@@ -125,10 +121,7 @@ CREATE TABLE IF NOT EXISTS `libros` (
   `genero` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `subgenero` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `editorial` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `copiaNro` int(11) NOT NULL,
-  PRIMARY KEY (`lib_ID`),
-  KEY `libro_autor` (`aut_ID`),
-  KEY `libro_estado` (`est_ID`)
+  `copiaNro` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -145,11 +138,10 @@ INSERT INTO `libros` (`lib_ID`, `aut_ID`, `est_ID`, `isbn`, `nombre`, `genero`, 
 --
 
 DROP TABLE IF EXISTS `perfiles`;
-CREATE TABLE IF NOT EXISTS `perfiles` (
+CREATE TABLE `perfiles` (
   `perf_ID` int(11) NOT NULL,
   `nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `eliminado` tinyint(1) NOT NULL,
-  PRIMARY KEY (`perf_ID`)
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -158,7 +150,8 @@ CREATE TABLE IF NOT EXISTS `perfiles` (
 
 INSERT INTO `perfiles` (`perf_ID`, `nombre`, `eliminado`) VALUES
 (1, 'Administrador', 0),
-(2, 'Operador', 0);
+(2, 'Operador', 0),
+(3, 'Socio', 0);
 
 -- --------------------------------------------------------
 
@@ -167,14 +160,11 @@ INSERT INTO `perfiles` (`perf_ID`, `nombre`, `eliminado`) VALUES
 --
 
 DROP TABLE IF EXISTS `perf_funcionalidad`;
-CREATE TABLE IF NOT EXISTS `perf_funcionalidad` (
+CREATE TABLE `perf_funcionalidad` (
   `perFunc_iD` int(11) NOT NULL,
   `per_ID` int(11) NOT NULL,
   `func_ID` int(11) NOT NULL,
-  `eliminado` tinyint(1) NOT NULL,
-  PRIMARY KEY (`perFunc_iD`),
-  KEY `perFunc_perfil` (`per_ID`),
-  KEY `perFunc_func` (`func_ID`)
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -185,7 +175,10 @@ INSERT INTO `perf_funcionalidad` (`perFunc_iD`, `per_ID`, `func_ID`, `eliminado`
 (1, 1, 1, 0),
 (2, 1, 2, 0),
 (3, 1, 3, 0),
-(4, 2, 3, 0);
+(4, 2, 3, 0),
+(5, 1, 4, 0),
+(6, 3, 4, 0),
+(7, 2, 4, 0);
 
 -- --------------------------------------------------------
 
@@ -194,16 +187,13 @@ INSERT INTO `perf_funcionalidad` (`perFunc_iD`, `per_ID`, `func_ID`, `eliminado`
 --
 
 DROP TABLE IF EXISTS `prestamos`;
-CREATE TABLE IF NOT EXISTS `prestamos` (
+CREATE TABLE `prestamos` (
   `pres_ID` int(11) NOT NULL,
   `soc_ID` int(11) NOT NULL,
   `res_ID` int(11) NOT NULL,
   `lib_ID` int(11) NOT NULL,
   `fechaIni` date NOT NULL,
-  `fechaFin` date NOT NULL,
-  PRIMARY KEY (`pres_ID`),
-  KEY `prestamo_socio` (`soc_ID`),
-  KEY `prestamo_libro` (`lib_ID`)
+  `fechaFin` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -213,16 +203,13 @@ CREATE TABLE IF NOT EXISTS `prestamos` (
 --
 
 DROP TABLE IF EXISTS `reservas`;
-CREATE TABLE IF NOT EXISTS `reservas` (
+CREATE TABLE `reservas` (
   `res_ID` int(11) NOT NULL,
   `soc_ID` int(11) NOT NULL,
   `lib_ID` int(11) NOT NULL,
   `fechaIni` date NOT NULL,
   `fechaFin` date NOT NULL,
-  `realizada` tinyint(1) NOT NULL,
-  PRIMARY KEY (`res_ID`),
-  KEY `reserva_libro` (`lib_ID`),
-  KEY `reserva_socio` (`soc_ID`)
+  `realizada` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -232,17 +219,13 @@ CREATE TABLE IF NOT EXISTS `reservas` (
 --
 
 DROP TABLE IF EXISTS `sanciones`;
-CREATE TABLE IF NOT EXISTS `sanciones` (
+CREATE TABLE `sanciones` (
   `san_ID` int(11) NOT NULL,
   `pres_ID` int(11) NOT NULL,
   `tip_ID` int(11) NOT NULL,
   `soc_ID` int(11) NOT NULL,
   `fechaIni` date NOT NULL,
-  `fechaFin` date DEFAULT NULL,
-  PRIMARY KEY (`san_ID`),
-  KEY `sancion_socio` (`soc_ID`),
-  KEY `sancion_prestamo` (`pres_ID`),
-  KEY `sancion_tipo` (`tip_ID`)
+  `fechaFin` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -252,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `sanciones` (
 --
 
 DROP TABLE IF EXISTS `socios`;
-CREATE TABLE IF NOT EXISTS `socios` (
+CREATE TABLE `socios` (
   `soc_ID` int(11) NOT NULL,
   `usu_ID` int(11) NOT NULL,
   `nombreApe` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
@@ -260,9 +243,7 @@ CREATE TABLE IF NOT EXISTS `socios` (
   `barrio` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `localidad` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `provincia` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `codPostal` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`soc_ID`),
-  KEY `socio_usuario` (`usu_ID`)
+  `codPostal` varchar(10) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -272,10 +253,9 @@ CREATE TABLE IF NOT EXISTS `socios` (
 --
 
 DROP TABLE IF EXISTS `tipos_sanciones`;
-CREATE TABLE IF NOT EXISTS `tipos_sanciones` (
+CREATE TABLE `tipos_sanciones` (
   `tip_ID` int(11) NOT NULL,
-  `descripcion` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`tip_ID`)
+  `descripcion` varchar(100) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -293,24 +273,119 @@ INSERT INTO `tipos_sanciones` (`tip_ID`, `descripcion`) VALUES
 --
 
 DROP TABLE IF EXISTS `usuarios`;
-CREATE TABLE IF NOT EXISTS `usuarios` (
+CREATE TABLE `usuarios` (
   `usu_ID` int(11) NOT NULL,
   `perf_ID` int(11) NOT NULL,
+  `nombreApe` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `login` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `clave` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `fechaAlta` date NOT NULL,
   `fechaBaja` date DEFAULT NULL,
-  `eliminado` tinyint(1) NOT NULL,
-  PRIMARY KEY (`usu_ID`),
-  KEY `usuarios_perfiles` (`perf_ID`)
+  `eliminado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`usu_ID`, `perf_ID`, `login`, `clave`, `fechaAlta`, `fechaBaja`, `eliminado`) VALUES
-(1, 1, 'vic', 'victor', '2017-09-17', NULL, 0);
+INSERT INTO `usuarios` (`usu_ID`, `perf_ID`, `nombreApe`, `login`, `clave`, `fechaAlta`, `fechaBaja`, `eliminado`) VALUES
+(1, 1, 'Victor Martinez', 'vic', 'victor', '2017-10-01', NULL, 0);
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `autores`
+--
+ALTER TABLE `autores`
+  ADD PRIMARY KEY (`aut_ID`);
+
+--
+-- Indices de la tabla `catalogo`
+--
+ALTER TABLE `catalogo`
+  ADD PRIMARY KEY (`cat_ID`),
+  ADD KEY `catalogo_libro` (`lib_ID`);
+
+--
+-- Indices de la tabla `estados_libros`
+--
+ALTER TABLE `estados_libros`
+  ADD PRIMARY KEY (`est_ID`);
+
+--
+-- Indices de la tabla `funcionalidades`
+--
+ALTER TABLE `funcionalidades`
+  ADD PRIMARY KEY (`func_ID`);
+
+--
+-- Indices de la tabla `libros`
+--
+ALTER TABLE `libros`
+  ADD PRIMARY KEY (`lib_ID`),
+  ADD KEY `libro_autor` (`aut_ID`),
+  ADD KEY `libro_estado` (`est_ID`);
+
+--
+-- Indices de la tabla `perfiles`
+--
+ALTER TABLE `perfiles`
+  ADD PRIMARY KEY (`perf_ID`);
+
+--
+-- Indices de la tabla `perf_funcionalidad`
+--
+ALTER TABLE `perf_funcionalidad`
+  ADD PRIMARY KEY (`perFunc_iD`),
+  ADD KEY `perFunc_perfil` (`per_ID`),
+  ADD KEY `perFunc_func` (`func_ID`);
+
+--
+-- Indices de la tabla `prestamos`
+--
+ALTER TABLE `prestamos`
+  ADD PRIMARY KEY (`pres_ID`),
+  ADD KEY `prestamo_socio` (`soc_ID`),
+  ADD KEY `prestamo_libro` (`lib_ID`);
+
+--
+-- Indices de la tabla `reservas`
+--
+ALTER TABLE `reservas`
+  ADD PRIMARY KEY (`res_ID`),
+  ADD KEY `reserva_libro` (`lib_ID`),
+  ADD KEY `reserva_socio` (`soc_ID`);
+
+--
+-- Indices de la tabla `sanciones`
+--
+ALTER TABLE `sanciones`
+  ADD PRIMARY KEY (`san_ID`),
+  ADD KEY `sancion_socio` (`soc_ID`),
+  ADD KEY `sancion_prestamo` (`pres_ID`),
+  ADD KEY `sancion_tipo` (`tip_ID`);
+
+--
+-- Indices de la tabla `socios`
+--
+ALTER TABLE `socios`
+  ADD PRIMARY KEY (`soc_ID`),
+  ADD KEY `socio_usuario` (`usu_ID`);
+
+--
+-- Indices de la tabla `tipos_sanciones`
+--
+ALTER TABLE `tipos_sanciones`
+  ADD PRIMARY KEY (`tip_ID`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`usu_ID`),
+  ADD KEY `usuarios_perfiles` (`perf_ID`);
 
 --
 -- Restricciones para tablas volcadas
@@ -369,68 +444,6 @@ ALTER TABLE `socios`
 --
 ALTER TABLE `usuarios`
   ADD CONSTRAINT `usuarios_perfiles` FOREIGN KEY (`perf_ID`) REFERENCES `perfiles` (`perf_ID`);
-
-
---
--- Metadatos
---
-USE `phpmyadmin`;
-
---
--- Metadatos para la tabla autores
---
-
---
--- Metadatos para la tabla catalogo
---
-
---
--- Metadatos para la tabla estados_libros
---
-
---
--- Metadatos para la tabla funcionalidades
---
-
---
--- Metadatos para la tabla libros
---
-
---
--- Metadatos para la tabla perfiles
---
-
---
--- Metadatos para la tabla perf_funcionalidad
---
-
---
--- Metadatos para la tabla prestamos
---
-
---
--- Metadatos para la tabla reservas
---
-
---
--- Metadatos para la tabla sanciones
---
-
---
--- Metadatos para la tabla socios
---
-
---
--- Metadatos para la tabla tipos_sanciones
---
-
---
--- Metadatos para la tabla usuarios
---
-
---
--- Metadatos para la base de datos biblio
---
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -9,6 +9,7 @@
         <link rel="shortcut icon" href="web/img/favicon.ico" type="image/x-icon"/>
         <link rel="stylesheet" type="text/css" href="web/css/style.css">
         <link rel="stylesheet" type="text/css" href="web/css/biblio.css">
+        <link rel="stylesheet" type="text/css" href="web/css/form.css">
         <script type="text/javascript" src="web/js/jquery-3.2.1.js"></script>
         <script type="text/javascript" src="web/js/funciones.js"></script>
     </head>
@@ -24,7 +25,8 @@
                         <li><a href="#" id="mnuLogin">Ingresar</a></li>
                         <li><a href="#" id="mnuLinks">Links</a></li>
                         <li><a href="#" id="mnuContacto">Contacto</a></li>
-                        <li><a href="#" id="mnuAdmin">Admin</a></li>
+                        <li><a href="#" id="mnuSocios">Socios</a></li>
+                        <li><a href="#" id="mnuAdmin">Staff</a></li>
                         <li class="last"><a href="#" id="mnuAcercaDe">Acerca de..</a></li>
                     </ul>
                     <br class="clearfix" />
@@ -34,17 +36,13 @@
                         <h1><a href="#">Biblio!</a></h1>
                     </div>
                     <div id="search">
-                        <form action="" method="post">
-                            <div>
-                                <input class="form-text" name="search" size="32" maxlength="64" />  
-                            </div>
-                        </form>
+                        {infoUsuario}
                     </div>
                 </div>
-          
                 <div id="page">
                     {areaTrabajo}
                 </div> 
+
                 <br class="clearfix" />
                 <div id="footer">
                     &copy; Untitled | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a> | Images by <a href="http://fotogrph.com/">Fotogrph</a>
@@ -54,6 +52,6 @@
         <form id="frmMenu" method="post" action="index.php" name="frmMenu" >
             <input type="hidden" id="controlador" name="controlador" value="" >
             <input type="hidden" id="metodo" name="metodo" value="" >
-        </form>'
+        </form>
     </body>
 </html>

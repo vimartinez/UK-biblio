@@ -5,20 +5,34 @@ final class Login extends Vista {
     protected $mensaje="";
 
 public function mostrarHTML() {
-		$_SESSION = array();
         $diccionario = array(
             'areaTrabajo' => '
-                <div id="page">
-                    <div class="box">
-                        <h2>Ingreso al sistema:</h2>                
-                        <p>
-                            Solo para usuarios registrados<br />
-                        </p>
-                        <p id="frmlogin">
-                            ee
-                        </p>     
-                    </div>',
-            'mensajeError' => $this->getMensaje()
+                <div class="box">
+                    <h2>Ingreso al sistema:</h2> 
+                    <div class="msgError">{mensajeError} </div>                                
+                     <form id="frmlogin" name="frmlogin" method="post" action="index.php" class="form-style-1">
+                      <ul class="form-style-1">
+                       <li>
+                           <label>USUARIO <span class="required">*</span></label>
+                           <input type="text" id="frmLoginUsu" name="frmLoginUsu" class="field-long" required/>
+                        </li>
+                        <li>
+                           <label>CLAVE <span class="required">*</span></label>
+                           <input type="password" id="frmLoginClave" name="frmLoginClave" class="field-long" required/>
+                        </li>
+                        <li>
+                            <input type="button" value="Ingresar" id="frmLoginEnviar">
+                        </li>
+                        <input type="hidden" id="metodo" name="metodo" value="" >
+                        <input type="hidden" id="controlador" name="controlador" value="" >
+                     </ul>
+                    </form>
+                    <p>
+                        Para registrarse como socio debe acercarse a una de nuestras sucursales<br />
+                    </p>          
+                </div>',
+            'mensajeError' => $this->getMensaje(),
+            'infoUsuario' => $this->getinfoUsu()
         );
         foreach ($diccionario as $clave=>$valor){
             $this->template = str_replace('{'.$clave.'}', $valor, $this->template);

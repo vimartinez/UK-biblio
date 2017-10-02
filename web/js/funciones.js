@@ -34,4 +34,14 @@ $().ready(function () {
         $("#frmMenu #metodo").val("admin");
         $("#frmMenu").submit();
     });
+     $("#mnuSocios").click(function () {
+        $("#frmMenu #controlador").val("ControladorPrincipal");
+        $("#frmMenu #metodo").val("socios");
+        $("#frmMenu").submit();
+    });
+     $("#frmLoginEnviar").click(function () {
+    	$("#frmlogin #controlador").val("ControladorPrincipal");
+        $("#frmlogin #metodo").val("loginDo");
+        $("#frmlogin").submit();
+    });    
 });

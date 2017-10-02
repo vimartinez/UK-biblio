@@ -24,7 +24,6 @@ final class ModeloPrincipal extends Modelo {
 
 
 
-
     public function getParametro($hash, $parametro) {
         $client = $this->conectarJBoss();
         $param = array(
@@ -58,21 +57,38 @@ final class ModeloPrincipal extends Modelo {
         $this->desconectarBD($conn);
     }
 
-    public function iniciarSesion($Usu, $param1) {
-        $blowfish = new blowfish(SEMILLA);
-        $pass = bin2hex($blowfish->encrypt($Usu->getClave()));
-        $param = array('segLogIn' => $param1,
-            'username' => $Usu->getUsuario(),
-            'password' => $pass);
-        $client = $this->conectarJBoss();
-        $result = $client->call('logIn', $param, '', '', false, true);
-        if (!$result) {
-            echo "<span style='color:white;'>No se puede ejecutar LogIn en JBOSS</span>";
-            // die(); //completar
-        }
-        return $result['return'];
-    }
+    public function iniciarSesion($Usu, $clave) {
+      //  session_start();
+        $conn = $this->conectarBD();
+       
+        $consulta = "SELECT * from usuarios u 
+                    inner join perfiles p on u.perf_ID = p.perf_ID 
+                    where u.login='" . $Usu . "' and u.clave='".$clave."' ";
 
+        if ($resultado = $conn->query($consulta)) {
+            if($resultado->num_rows>0){
+                while ($fila = $resultado->fetch_row()) {
+                    $_SESSION['idUsuario'] =$fila[0]; 
+                    $_SESSION['idPerfil'] =$fila[1]; 
+                    $_SESSION['usuNombre'] =$fila[2];
+                    $_SESSION['usuLogin'] =$fila[3];
+                    $_SESSION['perfNombre'] =$fila[9];
+                    $_SESSION['datosUsu'] = $_SESSION['usuNombre'] . " (".$_SESSION['usuLogin'] . ")" . " <br> " . $_SESSION['perfNombre'];
+                   
+                }
+                $resultado->close();
+                $msg = "ok";
+                } 
+            else {  
+                $msg = "Usuario o clave inválidos";
+            }
+        }
+       $this->desconectarBD($conn);
+       //session_write_close();
+       return $msg;
+        
+    }
+/*
     public function validarSesion($hash) {
 
         $client = $this->conectarJBoss();
@@ -98,11 +114,31 @@ final class ModeloPrincipal extends Modelo {
         }
         return $result;
     }
-
+*/
     public function getFecha() {
        
        $fecha = date("d") . " - " . date("m") . " - " . date("Y");
         return $fecha;
+    }
+
+    public function getFuncionalidades($idPerfil){
+        $sql = "select f.func_ID, f.descripcion, f.comentario from perf_funcionalidad pf
+                inner join funcionalidades f ON pf.func_ID = f.func_ID
+                WHERE per_ID =" . $idPerfil .
+                " AND pf.eliminado =0;";
+        $res = array();
+        $conn = $this->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $res = $resultado->fetch_all(MYSQLI_NUM);
+                $resultado->close();
+                } 
+            else {  
+                $res[] = "No se encontraron resultados";
+            }
+        }
+       $this->desconectarBD($conn);
+       return $res;
     }
 
 }

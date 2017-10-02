@@ -5,7 +5,6 @@ final class Bienvenida extends Vista {
     protected $mensaje="";
 
 public function mostrarHTML() {
-		$_SESSION = array();
         $diccionario = array(
             'areaTrabajo' => '
                      <div id="sidebar">
@@ -58,8 +57,8 @@ public function mostrarHTML() {
                         </div>
                         <br class="clearfix" />
                     </div>',
-            'Título de la página' => 'Correo Argentino - SIE',
-            'mensajeError' => $this->getMensaje()
+            'mensajeError' => $this->getMensaje(),
+            'infoUsuario' => $this->getinfoUsu()
         );
         foreach ($diccionario as $clave=>$valor){
             $this->template = str_replace('{'.$clave.'}', $valor, $this->template);

@@ -5,21 +5,19 @@ final class Contacto extends Vista {
     protected $mensaje="";
 
 public function mostrarHTML() {
-		$_SESSION = array();
         $diccionario = array(
             'areaTrabajo' => '
-                <div id="page">
-                    <div class="box">
-                        <h2>Contacto:</h2>              
-                        <p>
-                            Dejanos tu consulta, responderemos a la brevedad... <br />
-                        </p>
-                        <p id="textoConsulta">
-                            ee
-                        </p>  
-                    </div>
+                <div class="box">
+                    <h2>Contacto:</h2>              
+                    <p>
+                        Dejanos tu consulta, responderemos a la brevedad... <br />
+                    </p>
+                    <p id="textoConsulta">
+                        ee
+                    </p>  
                 </div>',
-            'mensajeError' => $this->getMensaje()
+            'mensajeError' => $this->getMensaje(),
+            'infoUsuario' => $this->getinfoUsu()
         );
         foreach ($diccionario as $clave=>$valor){
             $this->template = str_replace('{'.$clave.'}', $valor, $this->template);
