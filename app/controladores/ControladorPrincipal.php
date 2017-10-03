@@ -63,14 +63,14 @@ final class ControladorPrincipal extends Controlador {
     }
 
     public function loginDo() {
-        require_once 'app/vistas/Login.php';
+        require_once 'app/vistas/Bienvenida.php';
 
         $usr = $_POST["frmLoginUsu"];
         $clave = $_POST["frmLoginClave"];
         $M = new ModeloPrincipal("");
         $res = $M->iniciarSesion($usr,$clave);
         $template = file_get_contents('web/principal.html');
-        $V = new Login($template);
+        $V = new Bienvenida($template);
         if (isset($_SESSION['datosUsu'])) $V->setinfoUsu($_SESSION['datosUsu']);
         if ($res != "ok"){
             $V->setMensaje($res);
@@ -126,6 +126,14 @@ final class ControladorPrincipal extends Controlador {
             $res = "Debe ingresar al sistema para visualizar estos contenidos";
         }
         $V->setData($res);
+        $V->mostrarHTML();
+    }
+    public function salir() {
+        require_once 'app/vistas/Bienvenida.php';
+        session_destroy();
+
+        $template = file_get_contents('web/principal.html');
+        $V = new Bienvenida($template);
         $V->mostrarHTML();
     }
 }

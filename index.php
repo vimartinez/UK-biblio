@@ -1,11 +1,5 @@
 <?php
 session_start();
-if (isset($_SESSION['pp'])){
-    $_SESSION['contador'] =0;
-}
-else {
-    $_SESSION['contador'] =$_SESSION['contador']+1;
-}
          
 //session_write_close();
 

@@ -5,14 +5,24 @@ final class Socios extends Vista {
 protected $mensaje="";
 
 public function mostrarHTML() {
-    $resultados = $this->getData();
-    $tabla = '<ul class="list">';
+    $resultados =  $this->getData();
     if (isset($resultados[0][1])) {
+        $tabla = '<ul class="list">';
+        $primero = true;
         foreach ($resultados as $clave ) {
-            $tabla = $tabla .'<li ><a href="#" title="'.$clave[2].'">'.$clave[1].'</a></li>';
+            if ($primero){
+                 $tabla = $tabla .'<li class="first"><a href="#" title="'.$clave[2].'">'.$clave[1].'</a></li>';
+                 $primero = false; 
+            }
+            else {
+                 $tabla = $tabla .'<li ><a href="#" title="'.$clave[2].'">'.$clave[1].'</a></li>';
+            }
         }
+        $tabla = $tabla . '</ul>';
     }
-    $tabla = $tabla . '</ul>';
+    else {
+        $tabla = $resultados;
+    }
         $diccionario = array(
             'areaTrabajo' => '
                 <div class="box">
@@ -35,7 +45,5 @@ public function mostrarHTML() {
     public function setMensaje($mensaje) {
         $this->mensaje = $mensaje;
     }
-
-
 }
 ?>

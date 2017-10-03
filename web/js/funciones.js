@@ -39,9 +39,34 @@ $().ready(function () {
         $("#frmMenu #metodo").val("socios");
         $("#frmMenu").submit();
     });
+      $("#mnuSalir").click(function () {
+        $("#frmMenu #controlador").val("ControladorPrincipal");
+        $("#frmMenu #metodo").val("salir");
+        $("#frmMenu").submit();
+    });
      $("#frmLoginEnviar").click(function () {
     	$("#frmlogin #controlador").val("ControladorPrincipal");
         $("#frmlogin #metodo").val("loginDo");
         $("#frmlogin").submit();
-    });    
+    }); 
+    $("#func-1").click(function () {
+        $("#frmMenu #controlador").val("ControladorPrincipal");
+        $("#frmMenu #metodo").val("gestionLibros");
+        $("#frmMenu").submit();
+    }); 
+    $("#func-2").click(function () {
+        $("#frmMenu #controlador").val("ControladorPrincipal");
+        $("#frmMenu #metodo").val("gestionAutores");
+        $("#frmMenu").submit();
+    });  
+    $("#func-3").click(function () {
+        $("#frmMenu #controlador").val("ControladorPrincipal");
+        $("#frmMenu #metodo").val("gestionSocios");
+        $("#frmMenu").submit();
+    });
+    $("#func-4").click(function () {
+        $("#frmMenu #controlador").val("ControladorPrincipal");
+        $("#frmMenu #metodo").val("reservaLibros");
+        $("#frmMenu").submit();
+    });
 });

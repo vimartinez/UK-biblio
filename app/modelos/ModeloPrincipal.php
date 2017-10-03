@@ -15,6 +15,10 @@ final class ModeloPrincipal extends Modelo {
             printf("Falló la conexión: %s\n", mysqli_connect_error());
             exit();
         }
+        if (!$conn->set_charset("utf8")) {
+            printf("Error cargando el conjunto de caracteres utf8: %s\n", $mysqli->error);
+            exit();
+        }
         return $conn;
     }
 
