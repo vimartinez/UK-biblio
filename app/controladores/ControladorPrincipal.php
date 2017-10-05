@@ -7,6 +7,8 @@ require_once 'app/modelos/ModeloPrincipal.php';
 final class ControladorPrincipal extends Controlador {
 
 
+
+
     public function bienvenida($error = null, $msg = null) {
         require_once 'app/vistas/Bienvenida.php';
         $M = new ModeloPrincipal("");
