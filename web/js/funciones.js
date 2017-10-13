@@ -40,9 +40,11 @@ $().ready(function () {
         $("#frmMenu").submit();
     });
       $("#mnuSalir").click(function () {
-        $("#frmMenu #controlador").val("ControladorPrincipal");
-        $("#frmMenu #metodo").val("salir");
-        $("#frmMenu").submit();
+        //  $(this).dialog("open");
+        $('#dialog').dialog('open');
+        //$("#frmMenu #controlador").val("ControladorPrincipal");
+        //$("#frmMenu #metodo").val("salir");
+        //$("#frmMenu").submit();
     });
      $("#frmLoginEnviar").click(function () {
     	$("#frmlogin #controlador").val("ControladorPrincipal");
@@ -69,4 +71,23 @@ $().ready(function () {
         $("#frmMenu #metodo").val("reservaLibros");
         $("#frmMenu").submit();
     });
+$("#dialog").dialog({
+    modal: true, title: 'Aviso:', zIndex: 10000, autoOpen: false,
+    width: 'auto', resizable: false,
+    buttons: {
+        Si: function () {
+            $(this).dialog("close");
+            $("#frmMenu #controlador").val("ControladorPrincipal");
+            $("#frmMenu #metodo").val("salir");
+            $("#frmMenu").submit();
+        },
+        No: function () {                                                                 
+            $(this).dialog("close");
+        }
+    },
+   // close: function (event, ui) {
+   //     $(this).remove();
+   // }
+});
+
 });

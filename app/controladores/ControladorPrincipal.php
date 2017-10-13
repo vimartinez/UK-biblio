@@ -65,19 +65,19 @@ final class ControladorPrincipal extends Controlador {
     }
 
     public function loginDo() {
-        require_once 'app/vistas/Bienvenida.php';
-
         $usr = $_POST["frmLoginUsu"];
         $clave = $_POST["frmLoginClave"];
         $M = new ModeloPrincipal("");
         $res = $M->iniciarSesion($usr,$clave);
         $template = file_get_contents('web/principal.html');
-        $V = new Bienvenida($template);
-        if (isset($_SESSION['datosUsu'])) $V->setinfoUsu($_SESSION['datosUsu']);
         if ($res != "ok"){
+            require_once 'app/vistas/Login.php';
+            $V = new Login($template);
             $V->setMensaje($res);
         }
         else {
+            require_once 'app/vistas/Bienvenida.php';
+            $V = new Bienvenida($template);
             $V->setinfoUsu($_SESSION['datosUsu']);
         }
         $V->mostrarHTML();
@@ -136,6 +136,21 @@ final class ControladorPrincipal extends Controlador {
 
         $template = file_get_contents('web/principal.html');
         $V = new Bienvenida($template);
+        $V->mostrarHTML();
+    }
+    public function gestionAutores() {
+        require_once 'app/vistas/Autores.php';
+        $template = file_get_contents('web/principal.html');
+        $V = new Autores($template);
+        if (isset($_SESSION['datosUsu'])){
+            $M = new ModeloPrincipal("");
+            $res = $M->getPaises();
+            $V->setinfoUsu($_SESSION['datosUsu']);
+        }
+        else {
+            $res = "Debe ingresar al sistema para visualizar estos contenidos";
+        }
+        $V->setData($res);
         $V->mostrarHTML();
     }
 }

@@ -84,7 +84,7 @@ final class ModeloPrincipal extends Modelo {
                 $msg = "ok";
                 } 
             else {  
-                $msg = "Usuario o clave inválidos";
+                $msg = "Usuario o clave incorrectos";
             }
         }
        $this->desconectarBD($conn);
@@ -130,6 +130,23 @@ final class ModeloPrincipal extends Modelo {
                 inner join funcionalidades f ON pf.func_ID = f.func_ID
                 WHERE pf.per_ID =$idPerfil
                  AND pf.eliminado =0;";
+        $res = array();
+        $conn = $this->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $res = $resultado->fetch_all(MYSQLI_NUM);
+                $resultado->close();
+                } 
+            else {  
+                $res[] = "No se encontraron resultados";
+            }
+        }
+       $this->desconectarBD($conn);
+       return $res;
+    }
+
+    public function getPaises(){
+        $sql = "select iso, nombre from paises;";
         $res = array();
         $conn = $this->conectarBD();
         if ($resultado = $conn->query($sql)) {
