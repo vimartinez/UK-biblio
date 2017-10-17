@@ -144,7 +144,7 @@ final class ModeloPrincipal extends Modelo {
        $this->desconectarBD($conn);
        return $res;
     }
-
+/*
     public function getPaises(){
         $sql = "select iso, nombre from paises;";
         $res = array();
@@ -162,6 +162,23 @@ final class ModeloPrincipal extends Modelo {
        return $res;
     }
 
+    public function getAutores(){
+        $sql = "select aut_ID, nombreApe, nacionalidad from autores;";
+        $res = array();
+        $conn = $this->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $res = $resultado->fetch_all(MYSQLI_NUM);
+                $resultado->close();
+                } 
+            else {  
+                $res[] = "No se encontraron resultados";
+            }
+        }
+       $this->desconectarBD($conn);
+       return $res;
+    }
+*/
 }
 
 ?>

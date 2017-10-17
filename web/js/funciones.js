@@ -57,7 +57,7 @@ $().ready(function () {
         $("#frmMenu").submit();
     }); 
     $("#func-2").click(function () {
-        $("#frmMenu #controlador").val("ControladorPrincipal");
+        $("#frmMenu #controlador").val("ControladorAutores");
         $("#frmMenu #metodo").val("gestionAutores");
         $("#frmMenu").submit();
     });  

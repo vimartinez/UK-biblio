@@ -6,9 +6,6 @@ require_once 'app/modelos/ModeloPrincipal.php';
 
 final class ControladorPrincipal extends Controlador {
 
-
-
-
     public function bienvenida($error = null, $msg = null) {
         require_once 'app/vistas/Bienvenida.php';
         $M = new ModeloPrincipal("");
@@ -138,8 +135,24 @@ final class ControladorPrincipal extends Controlador {
         $V = new Bienvenida($template);
         $V->mostrarHTML();
     }
+    /*
     public function gestionAutores() {
         require_once 'app/vistas/Autores.php';
+        $template = file_get_contents('web/principal.html');
+        $V = new Autores($template);
+        if (isset($_SESSION['datosUsu'])){
+            $M = new ModeloPrincipal("");
+            $res = $M->getAutores();
+            $V->setinfoUsu($_SESSION['datosUsu']);
+        }
+        else {
+            $res = "Debe ingresar al sistema para visualizar estos contenidos";
+        }
+        $V->setData($res);
+        $V->mostrarHTML();
+    }
+    public function altaAutor() {
+        require_once 'app/vistas/AutoresAdd.php';
         $template = file_get_contents('web/principal.html');
         $V = new Autores($template);
         if (isset($_SESSION['datosUsu'])){
@@ -152,7 +165,7 @@ final class ControladorPrincipal extends Controlador {
         }
         $V->setData($res);
         $V->mostrarHTML();
-    }
+    }*/
 }
 
 ?>

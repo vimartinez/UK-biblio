@@ -9,7 +9,7 @@ public function mostrarHTML() {
 $resultados =  $this->getData();
         $tabla = "";
         foreach ($resultados as $clave ) {
-                 $tabla = $tabla .' <tr><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td><img src= ../web/img/delete-1-icon.png title="Eliminar" alt="X" height="20" width="20"></img></td></tr>';
+                 $tabla = $tabla .'<OPTION VALUE="'.$clave[0].'">'.$clave[1].'</OPTION>';;
             }
 
         $diccionario = array(
@@ -20,17 +20,20 @@ $resultados =  $this->getData();
                 Aquí se pueden gestionear los autores de libros - artículos, etc: <br />
             </p>
              <p id="frmAltaAutores">
-                 <table style="width:100%">
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Pais de nacimiento</th>
-                    <th> </th>
-                  </tr>
-                  {tablaAutores}
-                </table>
                 <ul class="form-style-1">
+                   <li>
+                       <label>Nombre <span class="required">*</span></label>
+                       <input type="text" id="frmNombre" name="frmNombre" class="field-long" required/>
+                    </li>
                     <li>
-                        <input type="button" value="Nuevo Autor" id="frmNuevoAutor">
+                    <label>Nacionalidad <span class="required">*</span></label>
+                       <SELECT NAME="nacionalidad" class="field-long">
+                            {paises}
+                        </SELECT>
+                    </li>
+                    <li>
+                        <input type="button" value="Guardar" id="frmGuardarAutores">
+                        <input type="button" value="Volver" id="frmVolverAutores">
                     </li>
                     <input type="hidden" id="metodo" name="metodo" value="" >
                     <input type="hidden" id="controlador" name="controlador" value="" >
@@ -39,7 +42,7 @@ $resultados =  $this->getData();
         </div>',
             'mensajeError' => $this->getMensaje(),
             'infoUsuario' => $this->getinfoUsu(),
-            'tablaAutores' => $tabla
+            'paises' => $tabla
 
         );
         foreach ($diccionario as $clave=>$valor){

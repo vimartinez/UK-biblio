@@ -8,8 +8,11 @@ abstract class Vista {
     protected $data = null;
 
 
-    public function __construct($template) {
+    public function __construct($template, $scripts = null) {
         $this->template = $template;
+        if(!is_null($scripts) ) {
+            $this->template = str_replace('<!-- Scripts -->',$scripts,  $this->template);
+        }
 
     }
 
