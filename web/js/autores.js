@@ -9,5 +9,11 @@ $().ready(function () {
         $("#frmMenu #metodo").val("gestionAutores");
         $("#frmMenu").submit();
     });
+    $("#tablaAutores img").click(function () {   
+        $("#frmMenu #controlador").val("controladorAutores");
+        $("#frmMenu #metodo").val("delAutor");
+        $("#frmMenu #ID").val($(this).closest("tr").attr("id"));
+        $("#frmMenu").submit();
+    });
 
 });

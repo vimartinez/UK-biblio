@@ -39,6 +39,24 @@ final class ControladorAutores extends Controlador {
         $V->setData($res);
         $V->mostrarHTML();
     }
+    public function delAutor() {
+
+        var_dump($_POST);
+      /*  require_once 'app/vistas/AutoresAdd.php';
+        $template = file_get_contents('web/principal.html');
+        $scripts = '<script src="web/js/autores.js"></script>';
+        $V = new Autores($template, $scripts);
+        if (isset($_SESSION['datosUsu'])){
+            $M = new ModeloAutores("");
+            $res = $M->getPaises();
+            $V->setinfoUsu($_SESSION['datosUsu']);
+        }
+        else {
+            $res = "Debe ingresar al sistema para visualizar estos contenidos";
+        }
+        $V->setData($res);
+        $V->mostrarHTML();*/
+    }
 }
 
 ?>

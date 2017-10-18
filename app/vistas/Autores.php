@@ -9,7 +9,7 @@ public function mostrarHTML() {
 $resultados =  $this->getData();
         $tabla = "";
         foreach ($resultados as $clave ) {
-                 $tabla = $tabla .' <tr><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td><img src= ../web/img/delete-1-icon.png title="Eliminar" alt="X" height="20" width="20"></img></td></tr>';
+                 $tabla = $tabla .' <tr id="'.$clave[0].'"><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td><img src= ../web/img/delete-1-icon.png id="delAutor" title="Eliminar Autor" alt="X" height="20" width="20"></img></td></tr>';
             }
 
         $diccionario = array(
@@ -20,7 +20,7 @@ $resultados =  $this->getData();
                 Aquí se pueden gestionear los autores de libros - artículos, etc: <br />
             </p>
              <p id="frmAltaAutores">
-                 <table style="width:100%">
+                 <table style="width:80%" class="form-style-1" id="tablaAutores">
                   <tr>
                     <th>Nombre</th>
                     <th>Pais de nacimiento</th>
@@ -32,8 +32,6 @@ $resultados =  $this->getData();
                     <li>
                         <input type="button" value="Nuevo Autor" id="frmNuevoAutor">
                     </li>
-                    <input type="hidden" id="metodo" name="metodo" value="" >
-                    <input type="hidden" id="controlador" name="controlador" value="" >
                 </ul>
             </p>
         </div>',
