@@ -24,7 +24,7 @@ final class ModeloAutores extends Modelo {
     }
 
     public function getAutores(){
-        $sql = "select aut_ID, nombreApe, nacionalidad from autores;";
+        $sql = "select a.aut_ID, a.nombreApe, p.nombre from autores a inner join paises p on a.nacionalidad = p.id;";
         $res = array();
         $mp = new ModeloPrincipal("");
         $conn = $mp->conectarBD();

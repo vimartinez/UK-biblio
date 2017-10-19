@@ -33,6 +33,10 @@ $resultados =  $this->getData();
                         </SELECT>
                     </li>
                     <li>
+                    <label>Nacionalidad <span class="required">*</span></label>
+                       <input type="text" id="frmNac" name="frmNac" class="field-long" required/>
+                    </li>
+                    <li>
                         <input type="button" value="Guardar" id="frmGuardarAutores">
                         <input type="button" value="Volver" id="frmVolverAutores">
                     </li>
