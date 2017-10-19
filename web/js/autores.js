@@ -21,6 +21,10 @@ $().ready(function () {
         $("#frmAutores").submit();
     });
     $( "#frmNombre" ).focus();
+     function log( message ) {
+      $( "<div>" ).text( message ).prependTo( "#log" );
+      $( "#log" ).scrollTop( 0 );
+    }
     $( "#frmNac" ).autocomplete({
             source: function( request, response ) {
         $.ajax( {
