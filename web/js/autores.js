@@ -15,5 +15,10 @@ $().ready(function () {
         $("#frmMenu #ID").val($(this).closest("tr").attr("id"));
         $("#frmMenu").submit();
     });
+    $("#frmGuardarAutores").click(function () {
+        $("#frmAutores #controlador").val("controladorAutores");
+        $("#frmAutores #metodo").val("addAutorDo");
+        $("#frmAutores").submit();
+    });
 
 });

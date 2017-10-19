@@ -6,7 +6,7 @@ require_once 'ModeloPrincipal.php';
 final class ModeloAutores extends Modelo {
 
     public function getPaises(){
-        $sql = "select iso, nombre from paises;";
+        $sql = "select id, nombre from paises;";
         $res = array();
         $mp = new ModeloPrincipal("");
         $conn = $mp->conectarBD();
@@ -36,6 +36,20 @@ final class ModeloAutores extends Modelo {
             else {  
                 $res[] = "No se encontraron resultados";
             }
+        }
+       $mp->desconectarBD($conn);
+       return $res;
+    }
+    public function addAutor($autor){
+        $sql = "insert into autores values((select max(aut_ID) + 1 from autores au),'".$autor->getNombreApe()."','".$autor->getNacionalidad()."');";
+        $res = array();
+        $mp = new ModeloPrincipal("");
+        $conn = $mp->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            $res[] = "ok";
+            } 
+        else {  
+            $res[] = "No se pudo insertar el autor";
         }
        $mp->desconectarBD($conn);
        return $res;

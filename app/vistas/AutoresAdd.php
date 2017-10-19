@@ -1,6 +1,6 @@
 <?php
 require_once 'app/inc/Vista.php';
-final class Autores extends Vista {
+final class AutoresAdd extends Vista {
     
 protected $mensaje="";
 
@@ -20,6 +20,7 @@ $resultados =  $this->getData();
                 Aquí se pueden gestionear los autores de libros - artículos, etc: <br />
             </p>
              <p id="frmAltaAutores">
+              <form id="frmAutores" method="post" action="index.php" name="frmMenu" >
                 <ul class="form-style-1">
                    <li>
                        <label>Nombre <span class="required">*</span></label>
@@ -27,7 +28,7 @@ $resultados =  $this->getData();
                     </li>
                     <li>
                     <label>Nacionalidad <span class="required">*</span></label>
-                       <SELECT NAME="nacionalidad" class="field-long">
+                       <SELECT name="frmNacionalidad" id="frmNacionalidad" class="field-long">
                             {paises}
                         </SELECT>
                     </li>
@@ -38,6 +39,7 @@ $resultados =  $this->getData();
                     <input type="hidden" id="metodo" name="metodo" value="" >
                     <input type="hidden" id="controlador" name="controlador" value="" >
                 </ul>
+                </form>
             </p>
         </div>',
             'mensajeError' => $this->getMensaje(),

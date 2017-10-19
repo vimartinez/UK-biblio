@@ -1,6 +1,6 @@
 <?php
 require_once 'app/inc/Vista.php';
-final class Autores extends Vista {
+final class AutoresV extends Vista {
     
 protected $mensaje="";
 
@@ -20,7 +20,7 @@ $resultados =  $this->getData();
                 Aquí se pueden gestionear los autores de libros - artículos, etc: <br />
             </p>
              <p id="frmAltaAutores">
-                 <table style="width:80%" class="form-style-1" id="tablaAutores">
+                 <table style="width:60%" class="tabla-1" id="tablaAutores">
                   <tr>
                     <th>Nombre</th>
                     <th>Pais de nacimiento</th>
@@ -28,6 +28,7 @@ $resultados =  $this->getData();
                   </tr>
                   {tablaAutores}
                 </table>
+                <br /> <br/>
                 <ul class="form-style-1">
                     <li>
                         <input type="button" value="Nuevo Autor" id="frmNuevoAutor">

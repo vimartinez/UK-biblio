@@ -1,14 +1,14 @@
 <?php
 
-abstract class Autores {
+final class Autores {
     
     protected $id = null;
     protected $nombreApe = null;
     protected $nacionalidad = null;
 
-    public function __construct() {
+    /*public function __construct() {
         $this->id = 0;
-    }
+    }*/
      public function __construct($id, $nombreApe, $nacionalidad) {
         $this->id = $id;
         $this->nombreApe = $nombreApe;
