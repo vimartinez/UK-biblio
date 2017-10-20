@@ -6,11 +6,11 @@ protected $mensaje="";
 
 public function mostrarHTML() {
 
-$resultados =  $this->getData();
-        $tabla = "";
-        foreach ($resultados as $clave ) {
-                 $tabla = $tabla .'<OPTION VALUE="'.$clave[0].'">'.$clave[1].'</OPTION>';;
-            }
+//$resultados =  $this->getData();
+ //       $tabla = "";
+  //      foreach ($resultados as $clave ) {
+ //                $tabla = $tabla .'<OPTION VALUE="'.$clave[0].'">'.$clave[1].'</OPTION>';;
+  //          }
 
         $diccionario = array(
             'areaTrabajo' => '
@@ -27,13 +27,7 @@ $resultados =  $this->getData();
                        <input type="text" id="frmNombre" name="frmNombre" class="field-long" required/>
                     </li>
                     <li>
-                    <label>Nacionalidad <span class="required">*</span></label>
-                       <SELECT name="frmNacionalidad" id="frmNacionalidad" class="field-long">
-                            {paises}
-                        </SELECT>
-                    </li>
-                    <li>
-                    <label>Nacionalidad <span class="required">*</span></label>
+                    <label>País de nacimiento <span class="required">*</span></label>
                        <input type="text" id="frmNac" name="frmNac" class="field-long" required/>
                     </li>
                     <li>
@@ -42,24 +36,15 @@ $resultados =  $this->getData();
                     </li>
                     <input type="hidden" id="metodo" name="metodo" value="" >
                     <input type="hidden" id="controlador" name="controlador" value="" >
+                    <input type="hidden" id="autPais" name="autPais" value="" >
                 </ul>
                 </form>
             </p>
         </div>
-
-
-<div class="ui-widget" style="margin-top:2em; font-family:Arial">
-  Result:
-  <div id="log" style="height: 200px; width: 300px; overflow: auto;" class="ui-widget-content"></div>
-</div>
-
-
-
-
         ',
             'mensajeError' => $this->getMensaje(),
-            'infoUsuario' => $this->getinfoUsu(),
-            'paises' => $tabla
+            'infoUsuario' => $this->getinfoUsu()
+           // 'paises' => $tabla
 
         );
         foreach ($diccionario as $clave=>$valor){

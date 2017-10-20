@@ -9,11 +9,17 @@ $().ready(function () {
         $("#frmMenu #metodo").val("gestionAutores");
         $("#frmMenu").submit();
     });
-    $("#tablaAutores img").click(function () {   
+    $("#frmVolverStaff").click(function () {
+        $("#frmMenu #controlador").val("controladorPrincipal");
+        $("#frmMenu #metodo").val("admin");
+        $("#frmMenu").submit();
+    });
+    $("#tablaAutores img").click(function () {  
         $("#frmMenu #controlador").val("controladorAutores");
         $("#frmMenu #metodo").val("delAutor");
         $("#frmMenu #ID").val($(this).closest("tr").attr("id"));
-        $("#frmMenu").submit();
+        $("#textoDialogo").html("Esta acción borrará un autor, ¿Desea continuar?");
+        $('#dialog').dialog('open');
     });
     $("#frmGuardarAutores").click(function () {
         $("#frmAutores #controlador").val("controladorAutores");
@@ -21,26 +27,26 @@ $().ready(function () {
         $("#frmAutores").submit();
     });
     $( "#frmNombre" ).focus();
-     function log( message ) {
-      $( "<div>" ).text( message ).prependTo( "#log" );
-      $( "#log" ).scrollTop( 0 );
-    }
     $( "#frmNac" ).autocomplete({
-            source: function( request, response ) {
+        source: function( request, response ) {
         $.ajax( {
           url: "app/modelos/autorAutocomplete.php",
-          dataType: "jsonp",
+          dataType: "json",
           data: {
             term: request.term
           },
           success: function( data ) {
             response( data );
-          }
+          },
+          error: function (xhr, status) {
+            alert('Error cargando los paises.');
+        },
         } );
       },
       minLength: 2,
       select: function( event, ui ) {
-        log( "Selected: " + ui.item.value + " aka " + ui.item.id );
+        $( "#frmNac" ).val(ui.item.value)
+        $( "#autPais" ).val(ui.item.id)
       }
     });
 

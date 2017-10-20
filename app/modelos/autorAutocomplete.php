@@ -1,6 +1,5 @@
 <?php
-
-header( 'Content-type: text/html; charset=utf-8' );
+//require_once 'ModeloPrincipal.php';
 
 $search = $_GET["term"];
 $server = "127.0.0.1";
@@ -10,6 +9,9 @@ $pass = "";
 
   
 $conn = new mysqli($server, $usr, $pass, $bd);
+
+//$mp = new ModeloPrincipal("");
+//$conn = $mp->conectarBD();
 if (mysqli_connect_errno()) {
     printf("Falló la conexión: %s\n", mysqli_connect_error());
     exit();
@@ -18,16 +20,16 @@ if (!$conn->set_charset("utf8")) {
     printf("Error cargando el conjunto de caracteres utf8: %s\n", $mysqli->error);
     exit();
 }
-
-$sql = "select id, nombre from paises where nombre like   '" . $search . "%'  ORDER BY nombre DESC";
+$res = array();
+$sql = "select id, nombre as value from paises where nombre like   '" . $search . "%'  ORDER BY nombre DESC";
 if ($resultado = $conn->query($sql)) {
-    while ($fila = $resultado->fetch_row()) {
-    	printf ("%s (%s)\n", $fila[0], $fila[1]);
-    //	echo '<div class="suggest-element"><a data="'.$fila[1].'" id="service'.$fila[0].'">'.utf8_encode($fila[1]).'</a></div>';
+    while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+		$res[] = $fila;
     }
 }
-else {
-	echo "No se encontraron resultados";
-}
+echo json_encode($res);
 $conn->close();
+//$mp->desconectarBD($conn);
 ?>
+
+ 

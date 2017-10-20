@@ -24,7 +24,7 @@ final class ModeloAutores extends Modelo {
     }
 
     public function getAutores(){
-        $sql = "select a.aut_ID, a.nombreApe, p.nombre from autores a inner join paises p on a.nacionalidad = p.id;";
+        $sql = "select a.aut_ID, a.nombreApe, p.nombre from autores a left join paises p on a.nacionalidad = p.id;";
         $res = array();
         $mp = new ModeloPrincipal("");
         $conn = $mp->conectarBD();
@@ -54,7 +54,20 @@ final class ModeloAutores extends Modelo {
        $mp->desconectarBD($conn);
        return $res;
     }
-
+    public function delAutor($autor){
+        $sql = "delete from autores where aut_id = ".$autor->getID()." ;";
+        $res = array();
+        $mp = new ModeloPrincipal("");
+        $conn = $mp->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            $res[] = "ok";
+            } 
+        else {  
+            $res[] = "err";
+        }
+       $mp->desconectarBD($conn);
+       return $res;
+    }
 }
 
 ?>

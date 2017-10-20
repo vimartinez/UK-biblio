@@ -8,6 +8,7 @@ session_start();
 //Print_r ("sesionID:" . session_id() . "<br>");
 //Print_r ($_SESSION);
 
+
 if (!empty($_POST['controlador']))
         $controlador = $_POST['controlador'];
     else

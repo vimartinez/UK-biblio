@@ -9,7 +9,7 @@ public function mostrarHTML() {
 $resultados =  $this->getData();
         $tabla = "";
         foreach ($resultados as $clave ) {
-                 $tabla = $tabla .' <tr id="'.$clave[0].'"><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td><img src= ../web/img/delete-1-icon.png id="delAutor" title="Eliminar Autor" alt="X" height="20" width="20"></img></td></tr>';
+                 $tabla = $tabla .' <tr id="'.$clave[0].'"><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td><img src= ../web/img/delete-1-icon.png id="delAutor" title="Eliminar Autor" style="cursor:pointer" lt="X" height="15" width="15"></img></td></tr>';
             }
 
         $diccionario = array(
@@ -32,6 +32,7 @@ $resultados =  $this->getData();
                 <ul class="form-style-1">
                     <li>
                         <input type="button" value="Nuevo Autor" id="frmNuevoAutor">
+                        <input type="button" value="Volver" id="frmVolverStaff">
                     </li>
                 </ul>
             </p>
