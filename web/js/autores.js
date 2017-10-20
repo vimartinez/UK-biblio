@@ -30,11 +30,14 @@ $().ready(function () {
     $( "#frmNac" ).autocomplete({
         source: function( request, response ) {
         $.ajax( {
-          url: "app/modelos/autorAutocomplete.php",
-          dataType: "json",
-          data: {
+          url: 'index.php',
+        data: {
+            controlador: 'controladorAutores',
+            metodo: 'autorAutocomplete',
             term: request.term
-          },
+        },
+        type: 'POST',
+          dataType: "json",
           success: function( data ) {
             response( data );
           },

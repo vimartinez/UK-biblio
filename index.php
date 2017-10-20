@@ -1,13 +1,19 @@
 <?php
 ini_set('session.cache_limiter','public');
 session_cache_limiter(false);
+function __autoload($name) {
+      $pathIncludes 		= 'app/inc/'.$name.'.php';
+      $pathControladores 	= 'app/controladores/'.$name.'.php';
+      $pathModelos 			= 'app/modelos/'.$name.'.php';
+      $pathVistas      = 'app/vistas/'.$name.'.php';
+
+      if(file_exists($pathIncludes)) require_once($pathIncludes);
+      if(file_exists($pathControladores)) require_once($pathControladores);
+      if(file_exists($pathModelos)) require_once($pathModelos);
+      if(file_exists($pathVistas)) require_once($pathVistas);
+
+   }
 session_start();
-         
-//session_write_close();
-
-//Print_r ("sesionID:" . session_id() . "<br>");
-//Print_r ($_SESSION);
-
 
 if (!empty($_POST['controlador']))
         $controlador = $_POST['controlador'];

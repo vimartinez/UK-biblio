@@ -12,6 +12,7 @@
     border-bottom: 2px solid grey;
     font: 15px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
     height: 30px;
+    text-align: left;
 }
 .tabla-1 td {
     padding: 3px;

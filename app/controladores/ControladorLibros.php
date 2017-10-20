@@ -1,14 +1,14 @@
 <?php
 
-final class ControladorAutores extends Controlador {
+final class ControladorLibros extends Controlador {
 
-    public function gestionAutores() {
+    public function gestionLibros() {
         $template = file_get_contents('web/principal.html');
-        $scripts = '<script src="web/js/autores.js"></script>';
-        $V = new Autores($template, $scripts);
+        $scripts = '<script src="web/js/libros.js"></script>';
+        $V = new Libros($template, $scripts);
         if (isset($_SESSION['datosUsu'])){
-            $M = new ModeloAutores("");
-            $res = $M->getAutores();
+            $M = new ModeloLibros("");
+            $res = $M->getLibros();
             $V->setinfoUsu($_SESSION['datosUsu']);
         }
         else {
@@ -17,6 +17,28 @@ final class ControladorAutores extends Controlador {
         $V->setData($res);
         $V->mostrarHTML();
     }
+
+    public function detalleLibro() {
+        $template = file_get_contents('web/principal.html');
+        $scripts = '<script src="web/js/libros.js"></script>';
+        $V = new LibrosDet($template, $scripts);
+        if (isset($_SESSION['datosUsu'])){
+            $M = new ModeloLibros("");
+            $res = $M->getLibrosDet();
+            $V->setinfoUsu($_SESSION['datosUsu']);
+        }
+        else {
+            $res = "Debe ingresar al sistema para visualizar estos contenidos";
+        }
+        $V->setData($res);
+        $V->mostrarHTML();
+    }
+
+
+
+
+
+
     public function addAutor($err = null) {
         $template = file_get_contents('web/principal.html');
         $scripts = '<script src="web/js/autores.js"></script>';
@@ -31,7 +53,7 @@ final class ControladorAutores extends Controlador {
         $V->mostrarHTML();
     }
     public function addAutorDo() {
-        $aut = new AutoresClass(0,$_POST["frmNombre"],$_POST["autPais"]);
+        $aut = new Autores(0,$_POST["frmNombre"],$_POST["autPais"]);
         if (isset($_SESSION['datosUsu'])){
             $M = new ModeloAutores("");
             $res = $M->addAutor($aut);
@@ -48,7 +70,7 @@ final class ControladorAutores extends Controlador {
         }
     }
     public function delAutor() {
-        $aut = new AutoresClass($_POST["id"],null,null);
+        $aut = new Autores($_POST["id"],null,null);
         if (isset($_SESSION['datosUsu'])){
             $M = new ModeloAutores("");
             $res = $M->delAutor($aut);
@@ -64,20 +86,6 @@ final class ControladorAutores extends Controlador {
         }
         $V->setData($res);
         $V->mostrarHTML();
-    }
-    public function autorAutocomplete(){
-        $search = $_POST["term"];
-        $mp = new ModeloPrincipal("");
-        $conn = $mp->conectarBD();
-        $res = array();
-        $sql = "select id, nombre as value from paises where nombre like   '" . $search . "%'  ORDER BY nombre DESC";
-        if ($resultado = $conn->query($sql)) {
-            while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
-                $res[] = $fila;
-            }
-        }
-        echo json_encode($res);
-        $mp->desconectarBD($conn);
     }
 }
 

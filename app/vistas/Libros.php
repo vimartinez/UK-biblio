@@ -1,5 +1,5 @@
 <?php
-final class Autores extends Vista {
+final class Libros extends Vista {
     
 protected $mensaje="";
 
@@ -8,29 +8,32 @@ public function mostrarHTML() {
 $resultados =  $this->getData();
         $tabla = "";
         foreach ($resultados as $clave ) {
-                 $tabla = $tabla .' <tr id="'.$clave[0].'"><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td><img src= ../web/img/delete-1-icon.png id="delAutor" title="Eliminar Autor" style="cursor:pointer" alt="X" height="15" width="15"></img></td></tr>';
+                 $tabla = $tabla .' <tr style="cursor:pointer" id="'.$clave[0].'" ><td>'.$clave[0].'</td><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td>'.$clave[3].'</td><td>'.$clave[4].'</td><td>'.$clave[5].'</td></tr>';
             }
 
         $diccionario = array(
             'areaTrabajo' => '
                 <div class="box">
-            <h2>Administración de Autores:</h2>             
+            <h2>Administración de Libros:</h2>             
             <p>
-                Aquí se pueden gestionar los autores de libros - artículos, etc: <br />
+               Listado de libros disponbles.<br />
             </p>
-             <p id="frmAltaAutores">
-                 <table style="width:60%" class="tabla-1" id="tablaAutores">
-                  <tr>
+             <p id="frmAltaLibros">
+                 <table style="width:60%" class="tabla-1" id="tablaLibros">
+                  <tr >
                     <th>Nombre</th>
-                    <th>Pais de nacimiento</th>
-                    <th> </th>
+                    <th>Autor</th>
+                    <th>Género</th>
+                    <th>Subgénero</th>
+                    <th>Editorial</th>
+                    <th>Copias</th>
                   </tr>
-                  {tablaAutores}
+                  {tablaLibros}
                 </table>
                 <br /> <br/>
                 <ul class="form-style-1">
                     <li>
-                        <input type="button" value="Nuevo Autor" id="frmNuevoAutor">
+                        <input type="button" value="Nuevo Libro" id="frmNuevoLibro">
                         <input type="button" value="Volver" id="frmVolverStaff">
                     </li>
                 </ul>
@@ -38,7 +41,7 @@ $resultados =  $this->getData();
         </div>',
             'mensajeError' => $this->getMensaje(),
             'infoUsuario' => $this->getinfoUsu(),
-            'tablaAutores' => $tabla
+            'tablaLibros' => $tabla
 
         );
         foreach ($diccionario as $clave=>$valor){

@@ -50,7 +50,7 @@ $().ready(function () {
         $("#frmlogin").submit();
     }); 
     $("#func-1").click(function () {
-        $("#frmMenu #controlador").val("ControladorPrincipal");
+        $("#frmMenu #controlador").val("ControladorLibros");
         $("#frmMenu #metodo").val("gestionLibros");
         $("#frmMenu").submit();
     }); 

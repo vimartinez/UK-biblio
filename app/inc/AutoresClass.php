@@ -1,6 +1,6 @@
 <?php
 
-final class Autores {
+final class AutoresClass {
     
     protected $id = null;
     protected $nombreApe = null;

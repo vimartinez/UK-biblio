@@ -1,5 +1,4 @@
 <?php
-require_once 'app/inc/Vista.php';
 final class Login extends Vista {
     
     protected $mensaje="";
