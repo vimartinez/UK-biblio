@@ -2,90 +2,69 @@
 
 final class ControladorLibros extends Controlador {
 
-    public function gestionLibros() {
+    public function gestionLibros($msg = null, $err = null) {
         $template = file_get_contents('web/principal.html');
         $scripts = '<script src="web/js/libros.js"></script>';
+        $M = new ModeloLibros("");
+        $res = $M->getLibros();
         $V = new Libros($template, $scripts);
-        if (isset($_SESSION['datosUsu'])){
-            $M = new ModeloLibros("");
-            $res = $M->getLibros();
-            $V->setinfoUsu($_SESSION['datosUsu']);
-        }
-        else {
-            $res = "Debe ingresar al sistema para visualizar estos contenidos";
-        }
+        $V->setinfoUsu($_SESSION['datosUsu']);
         $V->setData($res);
+        if ($err) $V->setError($err);
+        if ($msg) $V->setMensaje($msg);
         $V->mostrarHTML();
     }
 
-    public function detalleLibro() {
+    public function detalleLibro($msg = null, $err = null) {
+        $libroID = $_POST["id"];
         $template = file_get_contents('web/principal.html');
         $scripts = '<script src="web/js/libros.js"></script>';
+        $M = new ModeloLibros("");
+        $res = $M->getLibrosDet($libroID);
         $V = new LibrosDet($template, $scripts);
-        if (isset($_SESSION['datosUsu'])){
-            $M = new ModeloLibros("");
-            $res = $M->getLibrosDet();
-            $V->setinfoUsu($_SESSION['datosUsu']);
+        if ($res[0] == "err"){
+            $V->setError("No se pudieron recuperar los detalles del libro");
         }
         else {
-            $res = "Debe ingresar al sistema para visualizar estos contenidos";
+            $V->setData($res);
         }
-        $V->setData($res);
+        $V->setinfoUsu($_SESSION['datosUsu']);
+        if ($err) $V->setError($err);
+        if ($msg) $V->setMensaje($msg);
         $V->mostrarHTML();
     }
-
-
-
-
-
-
-    public function addAutor($err = null) {
+    public function addLibro($msg = null, $err = null) {
         $template = file_get_contents('web/principal.html');
-        $scripts = '<script src="web/js/autores.js"></script>';
-        $V = new AutoresAdd($template, $scripts);
-        if (isset($_SESSION['datosUsu'])){
-            $V->setinfoUsu($_SESSION['datosUsu']);
-        }
-        else {
-            $res = "Debe ingresar al sistema para visualizar estos contenidos";
-        }
-        $V->setMensaje($err);
+        $scripts = '<script src="web/js/libros.js"></script>';
+        $V = new LibrosAdd($template, $scripts);
+        $V->setinfoUsu($_SESSION['datosUsu']);
+        $ma = new ModeloAutores("");
+        $V->setData($ma->getAutores());
+        if ($err) $V->setError($err);
+        if ($msg) $V->setMensaje($msg);
         $V->mostrarHTML();
     }
-    public function addAutorDo() {
-        $aut = new Autores(0,$_POST["frmNombre"],$_POST["autPais"]);
-        if (isset($_SESSION['datosUsu'])){
-            $M = new ModeloAutores("");
-            $res = $M->addAutor($aut);
-            if ($res[0] == "ok"){
-                $this->gestionAutores();
-            }
-            else{
-                $this->addAutor("No se pudo insertar el autor");
-            }
-            
+    public function addLibroDo() {
+        $libro = new LibrosClass($_POST["frmAutor"],1,$_POST["frmISBN"],$_POST["frmNombre"],$_POST["frmGenero"],$_POST["frmSubgenero"],$_POST["frmEditorial"],$_POST["frmRes"]);
+        $M = new ModeloLibros("");
+        $res = $M->addLibro($libro,$_POST["frmCopias"]);
+        if ($res == "ok"){
+            $this->addLibro("Se guardó el libro correctamente.",null);
         }
-        else {
-            $res = "Debe ingresar al sistema para visualizar estos contenidos";
+        else{
+            $this->addLibro(null, "No se pudo insertar el libro");
         }
     }
-    public function delAutor() {
-        $aut = new Autores($_POST["id"],null,null);
-        if (isset($_SESSION['datosUsu'])){
-            $M = new ModeloAutores("");
-            $res = $M->delAutor($aut);
-            if ($res[0] == "ok"){
-                $this->gestionAutores();
-            }
-            else{
-                $this->addAutor("No se pudo eliminar el autor");
-            }    
+    public function delLibro() {
+        $libro = new LibrosClass($_POST["id"]);
+        $M = new ModeloLibros("");
+        $res = $M->delLibro($libro);
+        if ($res == "ok"){
+            $this->gestionLibros("Se elimió el libro correctamente.",null);
         }
-        else {
-            $res = "Debe ingresar al sistema para visualizar estos contenidos";
-        }
-        $V->setData($res);
-        $V->mostrarHTML();
+        else{
+            $this->gestionLibros(null, "No se pudo eliminar el libro");
+        } 
     }
 }
 

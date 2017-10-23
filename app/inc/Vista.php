@@ -3,7 +3,8 @@
 abstract class Vista {
 
     protected $template = null;
-    protected $mensaje = null;
+    protected $mensaje = "";
+    protected $error = "";
     protected $infoUsu = null;
     protected $data = null;
 
@@ -22,6 +23,14 @@ abstract class Vista {
 
     public function setMensaje($mensaje) {
         $this->mensaje = $mensaje;
+    }
+
+    public function getError() {
+        return $this->error;
+    }
+
+    public function setError($error) {
+        $this->error = $error;
     }
 
     public function getTemplate() {
@@ -47,6 +56,23 @@ abstract class Vista {
         $this->data = $data;
     }
 
+    public function mostrarMensaje($mensaje){
+        return '<div class="ui-widget" >
+                <div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em; ">
+                    <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                    <strong>Mensaje:</strong> '.$mensaje.'</p>
+                </div>
+            </div>';
+    }
+
+    public function mostrarError($error){
+        return '<div class="ui-widget">
+                <div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
+                    <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+                    <strong>Error:</strong> '.$error.'</p>
+                </div>
+            </div>';
+    }
 
     abstract public function mostrarHTML();
 }

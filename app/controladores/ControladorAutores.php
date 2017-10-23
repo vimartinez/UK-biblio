@@ -2,68 +2,54 @@
 
 final class ControladorAutores extends Controlador {
 
-    public function gestionAutores() {
+    public function gestionAutores($msg = null, $err = null) {
         $template = file_get_contents('web/principal.html');
         $scripts = '<script src="web/js/autores.js"></script>';
         $V = new Autores($template, $scripts);
-        if (isset($_SESSION['datosUsu'])){
-            $M = new ModeloAutores("");
-            $res = $M->getAutores();
-            $V->setinfoUsu($_SESSION['datosUsu']);
+        $M = new ModeloAutores("");
+        $res = $M->getAutores();
+        if ($res[0]== "err"){
+            $V->setMensaje("No se encontraron autores en el sistema");
         }
         else {
-            $res = "Debe ingresar al sistema para visualizar estos contenidos";
+            $V->setData($res);
         }
-        $V->setData($res);
+        $V->setinfoUsu($_SESSION['datosUsu']);
+        if ($err) $V->setError($err);
+        if ($msg) $V->setMensaje($msg);
         $V->mostrarHTML();
     }
-    public function addAutor($err = null) {
+    public function addAutor($msg = null, $err = null) {
         $template = file_get_contents('web/principal.html');
         $scripts = '<script src="web/js/autores.js"></script>';
         $V = new AutoresAdd($template, $scripts);
-        if (isset($_SESSION['datosUsu'])){
-            $V->setinfoUsu($_SESSION['datosUsu']);
-        }
-        else {
-            $res = "Debe ingresar al sistema para visualizar estos contenidos";
-        }
-        $V->setMensaje($err);
+        $V->setinfoUsu($_SESSION['datosUsu']);
+        if ($err) $V->setError($err);
+        if ($msg) $V->setMensaje($msg);
         $V->mostrarHTML();
     }
     public function addAutorDo() {
         $aut = new AutoresClass(0,$_POST["frmNombre"],$_POST["autPais"]);
-        if (isset($_SESSION['datosUsu'])){
-            $M = new ModeloAutores("");
-            $res = $M->addAutor($aut);
-            if ($res[0] == "ok"){
-                $this->gestionAutores();
-            }
-            else{
-                $this->addAutor("No se pudo insertar el autor");
-            }
-            
+        $M = new ModeloAutores("");
+        $res = $M->addAutor($aut);
+        if ($res == "ok"){
+            $this->addAutor("Se agregó el autor correctamente",null);
         }
-        else {
-            $res = "Debe ingresar al sistema para visualizar estos contenidos";
+        else{
+            $this->addAutor(null,"No se pudo insertar el autor");
         }
+        
     }
     public function delAutor() {
         $aut = new AutoresClass($_POST["id"],null,null);
-        if (isset($_SESSION['datosUsu'])){
-            $M = new ModeloAutores("");
-            $res = $M->delAutor($aut);
-            if ($res[0] == "ok"){
-                $this->gestionAutores();
-            }
-            else{
-                $this->addAutor("No se pudo eliminar el autor");
-            }    
+        $M = new ModeloAutores("");
+        $res = $M->delAutor($aut);
+        if ($res == "ok"){
+            $this->gestionAutores("Se eliminó el autor",null);
         }
-        else {
-            $res = "Debe ingresar al sistema para visualizar estos contenidos";
-        }
-        $V->setData($res);
-        $V->mostrarHTML();
+        else{
+            $this->gestionAutores(null,"No se pudo eliminar el autor");
+        }    
     }
     public function autorAutocomplete(){
         $search = $_POST["term"];

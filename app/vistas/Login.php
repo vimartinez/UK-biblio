@@ -20,7 +20,7 @@ public function mostrarHTML() {
                            <input type="password" id="frmLoginClave" name="frmLoginClave" class="field-long" required/>
                         </li>
                         <li>
-                            <input type="button" value="Ingresar" id="frmLoginEnviar">
+                            <input type="submit" value="Ingresar" id="frmLoginEnviar">
                         </li>
                         <input type="hidden" id="metodo" name="metodo" value="" >
                         <input type="hidden" id="controlador" name="controlador" value="" >

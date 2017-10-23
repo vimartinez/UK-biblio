@@ -14,11 +14,41 @@ $().ready(function () {
         $("#frmMenu #metodo").val("gestionLibros");
         $("#frmMenu").submit();
     });
+     $("#frmGuardarLibro").click(function () {
+        $("#frmAltaLibro #controlador").val("controladorLibros");
+        $("#frmAltaLibro #metodo").val("addLibroDo");
+        $("#frmAltaLibro").submit();
+    });
       $("#tablaLibros td").click(function () {  
-        $("#frmMenu #controlador").val("controladorLibros");
-        $("#frmMenu #metodo").val("detalleLibro");
-        $("#frmMenu #ID").val($(this).closest("tr").attr("id"));
+        if ($(this).children().first().attr('id') == "delLibro"){
+             $("#frmMenu #controlador").val("controladorLibros");
+            $("#frmMenu #metodo").val("delLibro");
+            $("#frmMenu #ID").val($(this).closest("tr").attr("id"));
+            $("#textoDialogo").html("Se eliminarán todas las copias del libro seleccionado, ¿desea continuar?");
+            $('#dialog').dialog('open');
+            return;
+        }
+        else {
+                if ($(this).children().first().attr('id') == "imprEtiquetas"){
+                    $("#frmMenu #controlador").val("controladorLibros");
+                    $("#frmMenu #metodo").val("imprimirEtiquetas");
+                    $("#frmMenu #ID").val($(this).closest("tr").attr("id"));
+                    $("#textoDialogo").html("Se imprimirán las etiquetas para el libro seleccionado, ¿desea continuar?");
+                    $('#dialog').dialog('open');
+                    return;
+            }
+            else {
+                $("#frmMenu #controlador").val("controladorLibros");
+                $("#frmMenu #metodo").val("detalleLibro");
+                $("#frmMenu #ID").val($(this).closest("tr").attr("id"));
+                $("#frmMenu").submit();
+                return;
+            }
+        }
+    });
+    $("#frmNuevoAutor").click(function () {
+        $("#frmMenu #controlador").val("controladorAutores");
+        $("#frmMenu #metodo").val("addAutor");
         $("#frmMenu").submit();
     });
-
 });
