@@ -48,7 +48,12 @@ final class ControladorAutores extends Controlador {
             $this->gestionAutores("Se eliminó el autor",null);
         }
         else{
-            $this->gestionAutores(null,"No se pudo eliminar el autor");
+            if ($res == "libro"){
+                $this->gestionAutores("No se puede eliminar un autor si tiene libros en el sistema",null);
+            }
+            else {
+                $this->gestionAutores(null,"No se pudo eliminar el autor");
+            }      
         }    
     }
     public function autorAutocomplete(){

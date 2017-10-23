@@ -45,7 +45,7 @@ final class ControladorLibros extends Controlador {
         $V->mostrarHTML();
     }
     public function addLibroDo() {
-        $libro = new LibrosClass($_POST["frmAutor"],1,$_POST["frmISBN"],$_POST["frmNombre"],$_POST["frmGenero"],$_POST["frmSubgenero"],$_POST["frmEditorial"],$_POST["frmRes"]);
+        $libro = new LibrosClass(0,$_POST["frmAutor"],1,$_POST["frmISBN"],$_POST["frmNombre"],$_POST["frmGenero"],$_POST["frmSubgenero"],$_POST["frmEditorial"],$_POST["frmRes"]);
         $M = new ModeloLibros("");
         $res = $M->addLibro($libro,$_POST["frmCopias"]);
         if ($res == "ok"){

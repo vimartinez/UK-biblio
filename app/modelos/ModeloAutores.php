@@ -33,12 +33,21 @@ final class ModeloAutores extends Modelo {
        return $res;
     }
     public function delAutor($autor){
-        $sql = "update autores set eliminado = 1 where aut_id = ".$autor->getID()." ;";
-        $res = "err";
         $conn = $this->conectarBD();
+        $res = "err";
+        $sql = "select * from libros where aut_id = ".$autor->getID()." and eliminado = 0;";
         if ($resultado = $conn->query($sql)) {
-            $res = "ok";
+            if (sizeof($resultado->fetch_all(MYSQLI_NUM)) > 0){
+                $res = "libro";
             } 
+        else {
+            $sql = "update autores set eliminado = 1 where aut_id = ".$autor->getID()." ;";  
+            if ($resultado = $conn->query($sql)) {
+                $res = "ok";
+            } 
+        }
+    }
+       
        $this->desconectarBD($conn);
        return $res;
     }
