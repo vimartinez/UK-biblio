@@ -60,4 +60,9 @@ $().ready(function () {
             return;
         }
     });
+    $("#frmActualizarEstado").click(function () {
+        $("#frmEstadoCopia #controlador").val("controladorLibros");
+        $("#frmEstadoCopia #metodo").val("updEstadoCopiaDo");
+        $("#frmEstadoCopia").submit();
+    });
 });

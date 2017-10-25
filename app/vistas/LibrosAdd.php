@@ -18,7 +18,7 @@ public function mostrarHTML() {
             Alta de libro: <br />
         </p>
          <p id="frmAltaLibros">
-          <form id="frmAltaLibro" method="post" action="index.php" name="frmMenu" >
+          <form id="frmAltaLibro" method="post" action="index.php" >
             <ul class="form-style-1">
             {mensaje}{error}
                <li>

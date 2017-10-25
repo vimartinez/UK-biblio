@@ -94,6 +94,9 @@ select{
     width: 49%;
 }
 
+form-style-1 .field-triple{
+    width: 32%;
+}
 .form-style-1 .field-long{
     width: 100%;
 }

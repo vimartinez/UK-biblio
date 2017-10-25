@@ -1,7 +1,5 @@
 <?php
 final class Libros extends Vista {
-    
-protected $mensaje="";
 
 public function mostrarHTML() {
 
@@ -56,13 +54,5 @@ public function mostrarHTML() {
     }
     print $this->template;
     } 
-    public function getMensaje() {
-        return $this->mensaje;
-    }
-
-    public function setMensaje($mensaje) {
-        $this->mensaje = $mensaje;
-    }
-
 }
 ?>
