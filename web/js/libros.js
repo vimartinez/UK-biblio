@@ -51,4 +51,13 @@ $().ready(function () {
         $("#frmMenu #metodo").val("addAutor");
         $("#frmMenu").submit();
     });
+    $("#tablaLibrosDet td").click(function () {  
+        if ($(this).children().first().attr('id') == "updEstadoCopia"){
+            $("#frmMenu #controlador").val("controladorLibros");
+            $("#frmMenu #metodo").val("updEstadoCopia");
+            $("#frmMenu #ID").val($(this).closest("tr").attr("id"));
+            $("#frmMenu").submit();
+            return;
+        }
+    });
 });

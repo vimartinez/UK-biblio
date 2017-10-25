@@ -10,7 +10,7 @@ public function mostrarHTML() {
     $error = ($this->getError() != "" ? $this->mostrarError($this->getError()) : "");
     $tabla = "";
     foreach ($resultados as $clave ) {
-             $tabla = $tabla .' <tr id="'.$clave[0].'" ><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td>'.$clave[3].'</td><td>'.$clave[4].'</td><td>'.$clave[5].'</td><td>'.$clave[6].'</td><td>'.$clave[7].'</td><td>'.$clave[8].'</td><td><img src= ../web/img/page_edit.png id="updEstadoCopia" title="Cambiar estado de copia" style="cursor:pointer"  ></img></td></tr>';
+             $tabla = $tabla .' <tr id="'.$clave[7].'" ><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td>'.$clave[3].'</td><td>'.$clave[4].'</td><td>'.$clave[5].'</td><td>'.$clave[6].'</td><td>'.$clave[7].'</td><td>'.$clave[8].'</td><td><img src= ../web/img/page_edit.png id="updEstadoCopia" title="Cambiar estado de copia" style="cursor:pointer"  ></img></td></tr>';
         }
 
     $diccionario = array(

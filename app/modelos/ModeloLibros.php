@@ -84,6 +84,29 @@ final class ModeloLibros extends Modelo {
        $this->desconectarBD($conn);
        return $res;
     }
+    public function getCopia($libroID){
+        $sql = "select l.lib_ID, l.nombre, a.nombreApe, l.genero, l.subgenero, l.editorial, l.isbn , c.copia , el.descripcion as Estado 
+            from libros l  
+            inner join autores a on l.aut_id = a.aut_id  
+            inner join copias c on l.lib_ID = c.lib_ID
+            inner join estados_libros el on c.est_id = el.est_id
+            where l.lib_id = ".$libroID." 
+            and l.eliminado = 0;";
+        $res = array();
+        $conn = $this->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $res = $resultado->fetch_all(MYSQLI_NUM);
+                $resultado->close();
+                } 
+            else {  
+                $res[0] = "err";
+            }
+        }
+       $this->desconectarBD($conn);
+       return $res;
+    }
+
 }
 
 ?>

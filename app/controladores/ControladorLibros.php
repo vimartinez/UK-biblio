@@ -66,6 +66,21 @@ final class ControladorLibros extends Controlador {
             $this->gestionLibros(null, "No se pudo eliminar el libro");
         } 
     }
+     public function updEstadoCopia($msg = null, $err = null) {
+        var_dump($_POST); die();
+        $id = $_POST["id"];
+        $template = file_get_contents('web/principal.html');
+        $scripts = '<script src="web/js/libros.js"></script>';
+        $M = new ModeloLibros("");
+        $res = $M->getEstadosLibro();
+        $res = $M->getCopia();
+        $V = new LibrosCopia($template, $scripts);
+        $V->setinfoUsu($_SESSION['datosUsu']);
+        $V->setData($res);
+        if ($err) $V->setError($err);
+        if ($msg) $V->setMensaje($msg);
+        $V->mostrarHTML();
+    }
 }
 
 ?>
