@@ -22,6 +22,8 @@ public function mostrarHTML() {
                        <h4> Victor Martinez</h4>
                          
                         Buenos Aires - Argentina<br /><br /> <br /><br>
+                        Códigos de barra generados con <a href="http://pear.php.net/package/Image_Barcode/" target="_blank">Image_Barcode</a>. <br>
+
                     </p>
                 </div>',
             'mensajeError' => $this->getMensaje(),

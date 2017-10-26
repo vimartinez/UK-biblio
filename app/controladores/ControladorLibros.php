@@ -110,7 +110,6 @@ final class ControladorLibros extends Controlador {
         $res = array();
         $M = new ModeloLibros("");
         $res = $M->getLibro($idLibro);
-        var_dump($res);
         $template = file_get_contents('web/principal.html');
         $scripts = '<script src="web/js/libros.js"></script>';
         $V = new LibrosEtiquetas($template, $scripts);
