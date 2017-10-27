@@ -58,17 +58,10 @@ final class ControladorAutores extends Controlador {
     }
     public function autorAutocomplete(){
         $search = $_POST["term"];
-        $mp = new ModeloPrincipal("");
-        $conn = $mp->conectarBD();
-        $res = array();
-        $sql = "select id, nombre as value from paises where nombre like   '" . $search . "%'  ORDER BY nombre DESC";
-        if ($resultado = $conn->query($sql)) {
-            while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
-                $res[] = $fila;
-            }
-        }
+        $res ="";
+        $M = new ModeloAutores("");
+        $res = $M->autorAutocomplete($search);
         echo json_encode($res);
-        $mp->desconectarBD($conn);
     }
 }
 

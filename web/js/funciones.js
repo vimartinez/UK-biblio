@@ -60,7 +60,7 @@ $().ready(function () {
         $("#frmMenu").submit();
     });  
     $("#func-3").click(function () {
-        $("#frmMenu #controlador").val("ControladorPrincipal");
+        $("#frmMenu #controlador").val("ControladorSocios");
         $("#frmMenu #metodo").val("gestionSocios");
         $("#frmMenu").submit();
     });

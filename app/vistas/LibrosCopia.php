@@ -43,7 +43,6 @@ public function mostrarHTML() {
                     <input type="text" name="frmCalle" class="field-triple" placeholder="Calle" required value={calle} >&nbsp;
                     <input type="text" name="frmPasillo" class="field-triple" placeholder="Pasillo" required value={pasillo} >&nbsp;
                     <input type="text" name="frmEstante" class="field-triple" placeholder="Estante" required value={estante} >
-                    </li>
                 </li>
                 <li>
                  <input type="submit" value="Actualizar" id="frmActualizarEstado">

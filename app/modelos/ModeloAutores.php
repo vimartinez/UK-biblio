@@ -51,6 +51,18 @@ final class ModeloAutores extends Modelo {
        $this->desconectarBD($conn);
        return $res;
     }
+       public function autorAutocomplete($dato){
+        $conn = $this->conectarBD();
+        $res = array();
+        $sql = "select id, nombre as value from paises where nombre like   '" . $dato . "%'  ORDER BY nombre DESC";
+        if ($resultado = $conn->query($sql)) {
+            while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+                $res[] = $fila;
+            }
+        }
+        return $res;
+        $this->desconectarBD($conn);
+    }
 }
 
 ?>
