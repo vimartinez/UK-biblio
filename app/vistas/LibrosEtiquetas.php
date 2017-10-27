@@ -1,5 +1,5 @@
 <?php
-include "app/inc/Barcode.php";
+//include "app/inc/Barcode2.php";
 
 final class LibrosEtiquetas extends Vista {
 
@@ -61,8 +61,9 @@ public function mostrarHTML() {
     );
     foreach ($diccionario as $clave=>$valor){
         $this->template = str_replace('{'.$clave.'}', $valor, $this->template);
-    }
+      }
     print $this->template;
+   
     } 
 }
 ?>

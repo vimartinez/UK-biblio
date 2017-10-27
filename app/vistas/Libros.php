@@ -19,7 +19,7 @@ public function mostrarHTML() {
            Listado de libros disponbles.<br />
         </p>
          <p id="frmAltaLibros">
-             <table style="width:60%" class="tabla-1" id="tablaLibros">
+             <table style="width:80%" class="tabla-1" id="tablaLibros">
              {mensaje}{error}
               <tr >
                 <th>Nombre</th>
