@@ -4,8 +4,8 @@ session_cache_limiter(false);
 function __autoload($name) {
       $pathIncludes 		= 'app/inc/'.$name.'.php';
       $pathControladores 	= 'app/controladores/'.$name.'.php';
-      $pathModelos 			= 'app/modelos/'.$name.'.php';
-      $pathVistas      = 'app/vistas/'.$name.'.php';
+      $pathModelos 		= 'app/modelos/'.$name.'.php';
+      $pathVistas               = 'app/vistas/'.$name.'.php';
 
       if(file_exists($pathIncludes)) require_once($pathIncludes);
       if(file_exists($pathControladores)) require_once($pathControladores);

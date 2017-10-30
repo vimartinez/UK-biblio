@@ -16,7 +16,7 @@ final class ModeloPrincipal extends Modelo {
                     $_SESSION['idPerfil'] =$fila[1]; 
                     $_SESSION['usuNombre'] =$fila[2];
                     $_SESSION['usuLogin'] =$fila[3];
-                    $_SESSION['perfNombre'] =$fila[9];
+                    $_SESSION['perfNombre'] =$fila[15];
                     $_SESSION['datosUsu'] = $_SESSION['usuNombre'] . " (".$_SESSION['usuLogin'] . ")" . " <br> " . $_SESSION['perfNombre'];
                    
                 }
@@ -28,16 +28,8 @@ final class ModeloPrincipal extends Modelo {
             }
         }
        $this->desconectarBD($conn);
-       return $msg;
-        
+       return $msg;       
     }
-
-    public function getFecha() {
-       
-       $fecha = date("d") . " - " . date("m") . " - " . date("Y");
-        return $fecha;
-    }
-
     public function getFuncionalidades($idPerfil){
         $sql = "select f.func_ID, f.descripcion, f.comentario from perf_funcionalidad pf
                 inner join funcionalidades f ON pf.func_ID = f.func_ID
@@ -52,6 +44,29 @@ final class ModeloPrincipal extends Modelo {
                 } 
             else {  
                 $res[] = "No se encontraron resultados";
+            }
+        }
+       $this->desconectarBD($conn);
+       return $res;
+    }
+    public function getCatalogo(){
+        $sql = "select l.lib_ID, l.nombre, a.nombreApe, l.genero, l.subgenero, l.editorial , l.isbn , l.resena, count(*)
+            from libros l 
+            inner join autores a on l.aut_id = a.aut_id  
+            inner join copias c on l.lib_ID = c.lib_ID
+            where l.eliminado = 0 
+            and c.est_id =  2
+            group by l.lib_ID, l.nombre, a.nombreApe, l.genero, l.subgenero, l.editorial , l.isbn , l.resena
+            order by 1;";
+        $res = array();
+        $conn = $this->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $res = $resultado->fetch_all(MYSQLI_NUM);
+                $resultado->close();
+                } 
+            else {  
+                $res[] = "err";
             }
         }
        $this->desconectarBD($conn);

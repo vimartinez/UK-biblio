@@ -119,6 +119,32 @@ final class ControladorLibros extends Controlador {
         if ($msg) $V->setMensaje($msg);
         $V->mostrarHTML();
     }
+    
+    public function libroDet ($msg = null, $err = null) {
+        $id = $_POST["id"];
+        $template = file_get_contents('web/principal.html');
+        $scripts = '<script src="web/js/catalogo.js"></script>';
+        $V = new LibroDet($template, $scripts);
+        $V->setinfoUsu($_SESSION['datosUsu']);
+        $M = new ModeloLibros("");
+        $V->setData($M->getLibro($id));
+        if ($err) $V->setError($err);
+        if ($msg) $V->setMensaje($msg);
+        $V->mostrarHTML();
+    }
+    public function reservarLibro($msg = null, $err = null) {
+        $id = $_POST["id"];
+        $usu = $_SESSION['idUsuario'];
+        $M = new ModeloLibros("");
+        $res = $M->addReserva($id,$usu);
+        $CP = new ControladorPrincipal();
+        if ($res == "ok"){
+            $CP->catalogo("Se generó la reserva correctamente.<br>Atención: La reserva estará disponible por 3 días habiles.",null);
+        }
+        else{
+            $CP->catalogo(null, "No se pudo generar la reserva");
+        }
+    }
 }
 
 ?>

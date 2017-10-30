@@ -2,32 +2,36 @@
 
 final class ControladorPrincipal extends Controlador {
 
-    public function bienvenida($error = null, $msg = null) {
-        $M = new ModeloPrincipal("");
-        $fecha = $M->getFecha();
-
+    public function bienvenida($msg = null, $err = null) {
         $template = file_get_contents('web/principal.html');
         $V = new Bienvenida($template);
         if (isset($_SESSION['datosUsu'])) $V->setinfoUsu($_SESSION['datosUsu']);
-
         $V->mostrarHTML();
     }
       
-      public function servicios($error = null, $msg = null) {
-        $M = new ModeloPrincipal("");
-        $fecha = $M->getFecha();
-
+      public function servicios($msg = null, $err = null) {
         $template = file_get_contents('web/principal.html');
         $V = new Servicios($template);
         if (isset($_SESSION['datosUsu'])) $V->setinfoUsu($_SESSION['datosUsu']);
         $V->mostrarHTML();
     }
 
-    public function catalogo($error = null, $msg = null) {
+    public function catalogo($msg = null, $err = null) {
+        $res = array();
         $M = new ModeloPrincipal("");
+        $res = $M->getCatalogo();
         $template = file_get_contents('web/principal.html');
-        $V = new Catalogo($template);
-        if (isset($_SESSION['datosUsu'])) $V->setinfoUsu($_SESSION['datosUsu']);
+        $scripts = '<script src="web/js/catalogo.js"></script>';
+        $V = new Catalogo($template, $scripts);
+        $V->setinfoUsu($_SESSION['datosUsu']);
+        if ($res[0] == "err"){
+            $V->setError("No se pudo recuperar el catálogo");
+        }
+        else {
+            $V->setData($res);
+        }
+        if ($err) $V->setError($err);
+        if ($msg) $V->setMensaje($msg);
         $V->mostrarHTML();
     }
 

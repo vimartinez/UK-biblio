@@ -21,8 +21,10 @@ public function mostrarHTML() {
                         <br /> <br />
                        <h4> Victor Martinez</h4>
                          
-                        Buenos Aires - Argentina<br /><br /> <br /><br>
+                        Buenos Aires - Argentina -2017<br /><br /> <br /><br>
                         Códigos de barra generados con <a href="http://pear.php.net/package/Image_Barcode2" target="_blank">Image_Barcode2</a>. <br>
+                        Íconos de <a href="http://www.famfamfam.com/" target="_blank">FAMFAMFAM</a>.<br>
+                        Diseño web obtenido de <a href="https://templated.co/" target="_blank">TEMPLATED</a>.
 
                     </p>
                 </div>',

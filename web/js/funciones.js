@@ -66,7 +66,12 @@ $().ready(function () {
     });
     $("#func-4").click(function () {
         $("#frmMenu #controlador").val("ControladorPrincipal");
-        $("#frmMenu #metodo").val("reservaLibros");
+        $("#frmMenu #metodo").val("catalogo");
+        $("#frmMenu").submit();
+    });
+    $("#func-7").click(function () {
+        $("#frmMenu #controlador").val("ControladorPrincipal");
+        $("#frmMenu #metodo").val("catalogo");
         $("#frmMenu").submit();
     });
     $("#textoDialogo").html("Está saliendo del sistema, ¿Desea continuar?");
