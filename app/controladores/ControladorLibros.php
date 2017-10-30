@@ -145,6 +145,52 @@ final class ControladorLibros extends Controlador {
             $CP->catalogo(null, "No se pudo generar la reserva");
         }
     }
+    public function reserva($msg = null, $err = null) {
+        $template = file_get_contents('web/principal.html');
+        $scripts = '<script src="web/js/libros.js"></script>';
+        $V = new LibrosRes($template, $scripts);
+        $V->setinfoUsu($_SESSION['datosUsu']);
+        $MA = new ModeloAutores("");
+        $V->setData($MA->getAutores());
+        if ($err) $V->setError($err);
+        if ($msg) $V->setMensaje($msg);
+        $V->mostrarHTML();
+    }
+     public function libroAutocomplete(){
+        $search = $_POST["term"];
+        $res ="";
+        $M = new ModeloLibros("");
+        $res = $M->libroAutocomplete($search);
+        echo json_encode($res);
+    }
+     public function getLibro($msg = null, $err = null){
+        $libro = new LibrosClass(0,$_POST["frmAutor"],1,null,$_POST["frmNombrelibro"],null,null,null,null);
+        $res = array();
+        $template = file_get_contents('web/principal.html');
+        $scripts = '<script src="web/js/libros.js"></script>';
+        $V = new LibrosRes($template, $scripts);
+        $V->setinfoUsu($_SESSION['datosUsu']);
+        $M = new ModeloLibros("");
+        $res = $M->getLibroRes($libro);
+        if ($res[0] == "err"){
+            $V->setMensaje("No se encontran libros con el criterio elegido.");
+        }
+        else {
+            $V->setData2($res);
+            $res = $M->getCopiasDisponibles($res[0][6]);
+            if ($res[0] == "err"){
+                $V->setMensaje("No se encontran copias disponibles para el libro elegido.");
+            }
+            else {
+                $V->setCopias($res[0][0]);
+            }
+        }
+        $MA = new ModeloAutores("");
+        $V->setData($MA->getAutores());
+        if ($err) $V->setError($err);
+        if ($msg) $V->setMensaje($msg);
+        $V->mostrarHTML();
+    }
 }
 
 ?>

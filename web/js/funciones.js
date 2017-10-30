@@ -65,8 +65,18 @@ $().ready(function () {
         $("#frmMenu").submit();
     });
     $("#func-4").click(function () {
-        $("#frmMenu #controlador").val("ControladorPrincipal");
-        $("#frmMenu #metodo").val("catalogo");
+        $("#frmMenu #controlador").val("ControladorLibros");
+        $("#frmMenu #metodo").val("reserva");
+        $("#frmMenu").submit();
+    });
+    $("#func-5").click(function () {
+        $("#frmMenu #controlador").val("ControladorLibros");
+        $("#frmMenu #metodo").val("prestamo");
+        $("#frmMenu").submit();
+    });
+    $("#func-6").click(function () {
+        $("#frmMenu #controlador").val("ControladorLibros");
+        $("#frmMenu #metodo").val("devolucion");
         $("#frmMenu").submit();
     });
     $("#func-7").click(function () {

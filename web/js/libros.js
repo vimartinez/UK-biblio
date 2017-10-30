@@ -10,8 +10,8 @@ $().ready(function () {
         $("#frmMenu").submit();
     });
      $("#frmVolverLibro").click(function () {
-        $("#frmMenu #controlador").val("controladorLibros");
-        $("#frmMenu #metodo").val("gestionLibros");
+        $("#frmMenu #controlador").val("controladorPrincipal");
+        $("#frmMenu #metodo").val("admin");
         $("#frmMenu").submit();
     });
      $("#frmGuardarLibro").click(function () {
@@ -64,5 +64,43 @@ $().ready(function () {
         $("#frmEstadoCopia #controlador").val("controladorLibros");
         $("#frmEstadoCopia #metodo").val("updEstadoCopiaDo");
         $("#frmEstadoCopia").submit();
+    });
+    $( "#frmNombrelibro" ).autocomplete({
+        source: function( request, response ) {
+        $.ajax( {
+          url: 'index.php',
+        data: {
+            controlador: 'controladorLibros',
+            metodo: 'libroAutocomplete',
+            term: request.term
+        },
+        type: 'POST',
+          dataType: "json",
+          success: function( data ) {
+            response( data );
+          },
+          error: function (xhr, status) {
+            alert('Error cargando los paises.');
+        },
+        } );
+      },
+      minLength: 2,
+      select: function( event, ui ) {
+        $( "#frmNac" ).val(ui.item.value)
+        $( "#autPais" ).val(ui.item.id)
+      }
+    });
+    $("#frmBusquedaLibro").click(function () {
+        $("#frmReservaLibro #controlador").val("controladorLibros");
+        $("#frmReservaLibro #metodo").val("getLibro");
+        $("#frmReservaLibro").submit();
+    });
+    $("#frmReservarLibro").click(function () {  
+        $("#frmMenu #controlador").val("controladorLibros");
+        $("#frmMenu #metodo").val("reservarLibro");
+        $("#frmMenu #ID").val($("#frmReservaLibro #ID").val());
+        $("#textoDialogo").html("Se generará la reserva del libro, ¿desea continuar?");
+        $('#dialog').dialog('open');
+        return;
     });
 });
