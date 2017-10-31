@@ -10,8 +10,8 @@ $().ready(function () {
         $("#frmMenu").submit();
     });
      $("#frmVolverLibro").click(function () {
-        $("#frmMenu #controlador").val("controladorPrincipal");
-        $("#frmMenu #metodo").val("admin");
+        $("#frmMenu #controlador").val("controladorLibros");
+        $("#frmMenu #metodo").val("gestionLibros");
         $("#frmMenu").submit();
     });
      $("#frmGuardarLibro").click(function () {

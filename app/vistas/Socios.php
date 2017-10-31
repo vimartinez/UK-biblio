@@ -10,11 +10,11 @@ public function mostrarHTML() {
         $primero = true;
         foreach ($resultados as $clave ) {
             if ($primero){
-                 $tabla = $tabla .'<li class="first"><a href="#" title="'.$clave[2].'">'.$clave[1].'</a></li>';
+                 $tabla = $tabla .'<li class="first"><a href="#" id="func-'.$clave[0].'" title="'.$clave[2].'">'.$clave[1].'</a></li>';
                  $primero = false; 
             }
             else {
-                 $tabla = $tabla .'<li ><a href="#" title="'.$clave[2].'">'.$clave[1].'</a></li>';
+                 $tabla = $tabla .'<li ><a href="#" id="func-'.$clave[0].'" title="'.$clave[2].'">'.$clave[1].'</a></li>';
             }
         }
         $tabla = $tabla . '</ul>';
