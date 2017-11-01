@@ -219,6 +219,31 @@ final class ControladorLibros extends Controlador {
         $res = $M->isbnAutocomplete($search);
         echo json_encode($res);
     }
+    public function prestamo($msg = null, $err = null) {
+        $template = file_get_contents('web/principal.html');
+        $scripts = '<script src="web/js/libros.js"></script>';
+        $V = new LibrosPrestamo($template, $scripts);
+        $V->setinfoUsu($_SESSION['datosUsu']);
+        if (isset($_POST["frmNro"])){
+            $soc_id = $_POST["frmNro"];
+            $soc_nombre = $_POST["frmNombreSocio"];
+            $MS = new ModeloSocios("");
+            $res = $MS->getSocio($soc_id,$soc_nombre);
+            if ($res[0]== "err"){
+                $V->setMensaje("No se encontró el socio en el sistema");
+            }
+            else {
+                $V->setData($res);
+                $res = $MS->getReservas($res[0][0]);
+                if ($res[0]!= "err"){
+                    $V->setData2($res);
+                }
+            }
+        }
+        if ($err) $V->setError($err);
+        if ($msg) $V->setMensaje($msg);
+        $V->mostrarHTML();
+    }
 }
 
 ?>

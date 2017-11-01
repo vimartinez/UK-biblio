@@ -159,24 +159,32 @@ final class ModeloLibros extends Modelo {
     }
     public function addReserva($libro,$usu){
         $res = "err";
-        $result = array();
-        $conn = $this->conectarBD();  
-        $sql = "INSERT INTO reservas (res_ID,usu_ID,lib_ID,fechaIni,fechaFin,realizada) 
-                VALUES((select max(res_ID) + 1 from reservas res),".$usu.",".$libro.",sysdate(),DATE_ADD(CURDATE(), INTERVAL 3 DAY),0);;";
+        $result = array();  
+        $sql = "select cop_id from copias where lib_id = ".$libro." and est_id = 2 limit 1;";
+        $conn = $this->conectarBD();
+        $conn->begin_transaction();
+        if ($resultado = $conn->query($sql)) {
             if ($resultado = $conn->query($sql)) {
-                $sql = "select cop_id from copias where lib_id = ".$libro." and est_id = 2 limit 1;";
-                if ($resultado = $conn->query($sql)) {
-                    if($resultado->num_rows>0){
+                if($resultado->num_rows>0){
                     $result = $resultado->fetch_all(MYSQLI_NUM);    
-                    $res = $result[0][0];
-                    $sql = "update copias set est_id = 6 where cop_id= ".$res.";";
+                    $copia = $result[0][0];
+                    $sql = "update copias set est_id = 6 where cop_id= ".$copia.";";
                     if ($resultado = $conn->query($sql)) {
-                        $res = "ok";
+                        $sql = "INSERT INTO reservas (res_ID,usu_ID,lib_ID,cop_id,fechaIni,fechaFin,realizada) 
+                            VALUES((select max(res_ID) + 1 from reservas res),".$usu.",".$libro.",".$copia.",sysdate(),DATE_ADD(CURDATE(), INTERVAL 3 DAY),0);";
+                        if ($resultado = $conn->query($sql)) {
+                            $res = "ok";
                         }
-                    } 
-                }
-                
-            } 
+                    }
+                } 
+            }
+        } 
+        if ($res == "ok"){
+            $conn->commit();
+        }
+        else {
+            $conn->rollback();
+        }
        $this->desconectarBD($conn);
        return $res;
     }

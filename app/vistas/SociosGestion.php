@@ -12,7 +12,7 @@ public function mostrarHTML() {
         $primero = true;
         foreach ($resultados as $clave ) {
             if ($primero){
-                $tabla = $tabla .' <tr style="cursor:pointer" id="'.$clave[0].'" ><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td>'.$clave[3].'</td><td>'.$clave[4].'</td><td>'.$clave[5].'</td><td><img src= ../web/img/delete.png id="delLibro" title="Eliminar socio" style="cursor:pointer" alt="X" ></img></td></tr>';
+                $tabla = $tabla .' <tr style="cursor:pointer" id="'.$clave[0].'" ><td>'.$clave[0].'</td><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td>'.$clave[3].'</td><td>'.$clave[4].'</td><td>'.$clave[5].'</td><td><img src= ../web/img/delete.png id="delLibro" title="Eliminar socio" style="cursor:pointer" alt="X" ></img></td></tr>';
             }
             else {
                  $tabla = $tabla .'<li ><a href="#" title="'.$clave[2].'">'.$clave[1].'</a></li>';
@@ -33,6 +33,7 @@ public function mostrarHTML() {
                     {mensaje}{error}
                     <table style="width:80%" class="tabla-1" id="tablaSocios">
                     <tr >
+                        <th>Número</th>
                         <th>Nombre</th>
                         <th>Dirección</th>
                         <th>Barrio</th>

@@ -81,6 +81,61 @@ final class ModeloSocios extends Modelo {
        $this->desconectarBD($conn);
        return $res;
     }
+    public function getSocio($soc_id,$soc_nombre){      
+        $sql = "SELECT u.usu_ID, u.nombreApe, u.direccion, u.barrio, u.localidad, p.provincia 
+                 FROM usuarios u
+                 left join provincias p on u.provincia = p.id 
+                where  u.eliminado =0 ";
+        if ($soc_id != "") $sql = $sql . " and u.usu_ID =".$soc_id;
+        if ($soc_nombre != "") $sql = $sql . " and u.nombreApe ='".$soc_nombre."';";
+        echo $sql;
+        $res = array();
+        $conn = $this->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $res = $resultado->fetch_all(MYSQLI_NUM);
+                $resultado->close();
+                } 
+            else {  
+                $res[0] = "err";
+            }
+        }
+       $this->desconectarBD($conn);
+       return $res;
+    }
+    public function socioAutocomplete2($dato){
+        $conn = $this->conectarBD();
+        $res = array();
+        $sql = "select usu_id as id, nombreApe as value from usuarios where nombreApe like '" . $dato . "%' and eliminado = 0 order by nombreApe desc;";
+        if ($resultado = $conn->query($sql)) {
+            while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+                $res[] = $fila;
+            }
+        }
+        return $res;
+        $this->desconectarBD($conn);
+    }
+    public function getReservas($soc_id){      
+        $sql = "select r.res_id, r.usu_id, r.cop_id, r.fechaini, r.fechafin, l.isbn, l.nombre, l.genero, l.subgenero, l.editorial
+                from reservas r 
+                inner join libros l on r.lib_id = l.lib_id 
+                where r.usu_id = 1 
+                and r.fechaFin > sysdate() 
+                and r.realizada = 0;";
+        $res = array();
+        $conn = $this->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $res = $resultado->fetch_all(MYSQLI_NUM);
+                $resultado->close();
+                } 
+            else {  
+                $res[0] = "err";
+            }
+        }
+       $this->desconectarBD($conn);
+       return $res;
+    }
 }
 
 ?>

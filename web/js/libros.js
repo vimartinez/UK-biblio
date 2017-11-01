@@ -103,4 +103,34 @@ $().ready(function () {
         $('#dialog').dialog('open');
         return;
     });
+    $( "#frmNombreSocio" ).autocomplete({
+        source: function( request, response ) {
+        $.ajax( {
+          url: 'index.php',
+        data: {
+            controlador: 'controladorSocios',
+            metodo: 'socioAutocomplete2',
+            term: request.term
+        },
+        type: 'POST',
+          dataType: "json",
+          success: function( data ) {
+            response( data );
+          },
+          error: function (xhr, status) {
+            alert('Error cargando los paises.');
+        },
+        } );
+      },
+      minLength: 2,
+      select: function( event, ui ) {
+        $( "#frmNac" ).val(ui.item.value)
+        $( "#autPais" ).val(ui.item.id)
+      }
+    });
+     $("#frmBuscarSocio").click(function () {
+        $("#frmSocio #controlador").val("controladorLibros");
+        $("#frmSocio #metodo").val("prestamo");
+        $("#frmSocio").submit();
+    });
 });

@@ -78,6 +78,13 @@ final class ControladorSocios extends Controlador {
             $this->gestionSocios(null,"No se pudo eliminar el socio");        
         }    
     }
+    public function socioAutocomplete2(){
+        $search = $_POST["term"];
+        $res ="";
+        $M = new ModeloSocios("");
+        $res = $M->socioAutocomplete2($search);
+        echo json_encode($res);
+    }
 }
 
 ?>
