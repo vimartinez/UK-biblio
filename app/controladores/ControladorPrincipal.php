@@ -17,15 +17,23 @@ final class ControladorPrincipal extends Controlador {
     }
 
     public function catalogo($msg = null, $err = null) {
+        $libro = null;
+        if(isset($_POST["frmAutor"])){
+            if ($_POST["frmAutor"]!=0 || $_POST["frmISBN"] != "" || $_POST["frmNombrelibro"]!="" || $_POST["frmGenero"] != "" || $_POST["frmSubgenero"] != "" || $_POST["frmEditorial"] != ""){
+                $libro = new LibrosClass(0,$_POST["frmAutor"],1,$_POST["frmISBN"],$_POST["frmNombrelibro"],$_POST["frmGenero"],$_POST["frmSubgenero"],$_POST["frmEditorial"],null);
+            }
+        }
         $res = array();
         $M = new ModeloPrincipal("");
-        $res = $M->getCatalogo();
+        $res = $M->getCatalogo($libro);
         $template = file_get_contents('web/principal.html');
         $scripts = '<script src="web/js/catalogo.js"></script>';
         $V = new Catalogo($template, $scripts);
         $V->setinfoUsu($_SESSION['datosUsu']);
+        $MA = new ModeloAutores("");
+        $V->setData2($MA->getAutores());
         if ($res[0] == "err"){
-            $V->setError("No se pudo recuperar el catálogo");
+            $V->setMensaje("No se encontraron libros con el criterio elegido.");
         }
         else {
             $V->setData($res);

@@ -235,7 +235,54 @@ final class ModeloLibros extends Modelo {
        $this->desconectarBD($conn);
        return $res;
     }
-
+     public function editorialAutocomplete($dato){
+        $conn = $this->conectarBD();
+        $res = array();
+        $sql = "select distinct 0 as id, editorial as value from libros where editorial like '" . $dato . "%' and eliminado = 0 order by editorial desc;";
+        if ($resultado = $conn->query($sql)) {
+            while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+                $res[] = $fila;
+            }
+        }
+        return $res;
+        $this->desconectarBD($conn);
+    }
+    public function generoAutocomplete($dato){
+        $conn = $this->conectarBD();
+        $res = array();
+        $sql = "select distinct 0 as id, genero as value from libros where genero like '" . $dato . "%' and eliminado = 0 order by genero desc;";
+        if ($resultado = $conn->query($sql)) {
+            while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+                $res[] = $fila;
+            }
+        }
+        return $res;
+        $this->desconectarBD($conn);
+    }
+    public function subGeneroAutocomplete($dato){
+        $conn = $this->conectarBD();
+        $res = array();
+        $sql = "select distinct 0 as id, subgenero as value from libros where subgenero like '" . $dato . "%' and eliminado = 0 order by subgenero desc;";
+        if ($resultado = $conn->query($sql)) {
+            while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+                $res[] = $fila;
+            }
+        }
+        return $res;
+        $this->desconectarBD($conn);
+    }
+    public function isbnAutocomplete($dato){
+        $conn = $this->conectarBD();
+        $res = array();
+        $sql = "select distinct 0 as id, isbn as value from libros where isbn like '" . $dato . "%' and eliminado = 0 order by isbn desc;";
+        if ($resultado = $conn->query($sql)) {
+            while ($fila = $resultado->fetch_array(MYSQLI_ASSOC)) {
+                $res[] = $fila;
+            }
+        }
+        return $res;
+        $this->desconectarBD($conn);
+    }
 }
 
 ?>

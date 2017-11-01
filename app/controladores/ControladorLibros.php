@@ -191,6 +191,34 @@ final class ControladorLibros extends Controlador {
         if ($msg) $V->setMensaje($msg);
         $V->mostrarHTML();
     }
+    public function editorialAutocomplete(){
+        $search = $_POST["term"];
+        $res ="";
+        $M = new ModeloLibros("");
+        $res = $M->editorialAutocomplete($search);
+        echo json_encode($res);
+    }
+    public function generoAutocomplete(){
+        $search = $_POST["term"];
+        $res ="";
+        $M = new ModeloLibros("");
+        $res = $M->generoAutocomplete($search);
+        echo json_encode($res);
+    }
+    public function subGeneroAutocomplete(){
+        $search = $_POST["term"];
+        $res ="";
+        $M = new ModeloLibros("");
+        $res = $M->subGeneroAutocomplete($search);
+        echo json_encode($res);
+    }
+    public function isbnAutocomplete(){
+        $search = $_POST["term"];
+        $res ="";
+        $M = new ModeloLibros("");
+        $res = $M->isbnAutocomplete($search);
+        echo json_encode($res);
+    }
 }
 
 ?>
