@@ -14,6 +14,7 @@ function __autoload($name) {
 
    }
 session_start();
+require_once 'app/inc/constantes.php';
 
 if (!empty($_POST['controlador']))
         $controlador = $_POST['controlador'];

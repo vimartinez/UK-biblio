@@ -163,22 +163,22 @@ final class ModeloLibros extends Modelo {
         $sql = "select cop_id from copias where lib_id = ".$libro." and est_id = 2 limit 1;";
         $conn = $this->conectarBD();
         $conn->begin_transaction();
+        //if ($resultado = $conn->query($sql)) {
         if ($resultado = $conn->query($sql)) {
-            if ($resultado = $conn->query($sql)) {
-                if($resultado->num_rows>0){
-                    $result = $resultado->fetch_all(MYSQLI_NUM);    
-                    $copia = $result[0][0];
-                    $sql = "update copias set est_id = 6 where cop_id= ".$copia.";";
+            if($resultado->num_rows>0){
+                $result = $resultado->fetch_all(MYSQLI_NUM);    
+                $copia = $result[0][0];
+                $sql = "update copias set est_id = 6 where cop_id= ".$copia.";";
+                if ($resultado = $conn->query($sql)) {
+                    $sql = "INSERT INTO reservas (res_ID,usu_ID,lib_ID,cop_id,fechaIni,fechaFin,realizada) 
+                        VALUES((select max(res_ID) + 1 from reservas res),".$usu.",".$libro.",".$copia.",sysdate(),DATE_ADD(CURDATE(), INTERVAL 3 DAY),0);";
                     if ($resultado = $conn->query($sql)) {
-                        $sql = "INSERT INTO reservas (res_ID,usu_ID,lib_ID,cop_id,fechaIni,fechaFin,realizada) 
-                            VALUES((select max(res_ID) + 1 from reservas res),".$usu.",".$libro.",".$copia.",sysdate(),DATE_ADD(CURDATE(), INTERVAL 3 DAY),0);";
-                        if ($resultado = $conn->query($sql)) {
-                            $res = "ok";
-                        }
+                        $res = "ok";
                     }
-                } 
-            }
-        } 
+                }
+            } 
+        }
+        //} 
         if ($res == "ok"){
             $conn->commit();
         }
@@ -290,6 +290,40 @@ final class ModeloLibros extends Modelo {
         }
         return $res;
         $this->desconectarBD($conn);
+    }
+    public function addPrestamoRes($resID){
+        $res = "err";
+        $result = array();  
+        $sql = "select usu_id, lib_id, cop_id from reservas where res_id= ".$resID." ;";
+        $conn = $this->conectarBD();
+        $conn->begin_transaction();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $result = $resultado->fetch_all(MYSQLI_NUM);    
+                $usu_id = $result[0][0];
+                $lib_id = $result[0][1];
+                $cop_id = $result[0][2];
+                $sql = "update copias set est_id = 3 where cop_id= ".$cop_id.";";
+                if ($resultado = $conn->query($sql)) {
+                    $sql = "INSERT INTO prestamos (usu_ID, res_ID, lib_ID, fechaIni, fechaFin) 
+                        VALUES(".$usu_id.",".$resID.",".$lib_id.",sysdate(),DATE_ADD(CURDATE(), INTERVAL ".DURACION_PRESTAMO." DAY));";
+                    if ($resultado = $conn->query($sql)) {
+                        $sql = "update reservas set realizada = 1 where res_id= ".$resID.";";
+                        if ($resultado = $conn->query($sql)) {
+                            $res = "ok";
+                        }    
+                    }
+                }
+            } 
+        } 
+        if ($res == "ok"){
+            $conn->commit();
+        }
+        else {
+            $conn->rollback();
+        }
+       $this->desconectarBD($conn);
+       return $res;
     }
 }
 

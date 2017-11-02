@@ -133,4 +133,20 @@ $().ready(function () {
         $("#frmSocio #metodo").val("prestamo");
         $("#frmSocio").submit();
     });
+    $("#tablaLibrosPrest td").click(function () {  
+        if ($(this).children().first().attr('id') == "prestarLibro"){
+            $("#frmMenu #controlador").val("controladorLibros");
+            $("#frmMenu #metodo").val("addPrestamo");
+            $("#frmMenu #ID").val($(this).closest("tr").attr("id"));
+            $("#textoDialogo").html("Se generará el préstamo, ¿desea continuar?");
+            $('#dialog').dialog('open');
+            return;
+            
+        }
+    });
+    $("#frmBuscarLibroPrest").click(function () {
+        $("#frmlibroPrest #controlador").val("controladorLibros");
+        $("#frmlibroPrest #metodo").val("prestamo");
+        $("#frmSocio").submit();
+    });
 });
