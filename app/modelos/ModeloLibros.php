@@ -3,9 +3,6 @@
 final class ModeloLibros extends Modelo {
 
     public function getLibros(){
-       // $sql = "select l.nombre, a.nombreApe, l.genero, l.subgenero, l.editorial ,count(nombre)  
-        //        from libros l inner join autores a on l.aut_id = a.aut_id 
-        //        group by l.nombre; ;";
         $sql = "select l.nombre, a.nombreApe, l.genero, l.subgenero, l.editorial , l.copias , l.lib_ID 
                 from libros l 
                 inner join autores a on l.aut_id = a.aut_id  
@@ -52,9 +49,8 @@ final class ModeloLibros extends Modelo {
     public function addLibro($libro,$copias){
         $res = "err";
         $conn = $this->conectarBD();  
-        $sql = "insert into libros values(
-            (select max(lib_ID) + 1 from libros li),".
-            $libro->getAut_ID().",1,'".
+        $sql = "insert into libros (aut_ID,isbn,nombre,genero,subgenero,editorial,resena,copias,eliminado) values(".
+            $libro->getAut_ID().",'".
             $libro->getIsbn()."','".
             $libro->getNombre()."','".
             $libro->getGenero()."','".
@@ -63,10 +59,11 @@ final class ModeloLibros extends Modelo {
             $libro->getResena()."','".
             $copias."',0);";
             if ($resultado = $conn->query($sql)) {
+                $lib_id = $conn->insert_id;
                 for ($i=0;$i<$copias;$i++){
                     $copia = $i+1;
-                    $sql = "insert into copias values(
-                        (select max(cop_ID) + 1 from copias co),(select max(lib_ID) from libros),1,". $copia . ", null, null, null );";  
+                    $sql = "insert into copias (lib_ID,est_ID,copia,calle,pasillo,estante)
+                        values(".$lib_id.",1,". $copia . ", null, null, null );";  
                         $resultado = $conn->query($sql);  
                     }
                 $res = "ok";
@@ -170,8 +167,8 @@ final class ModeloLibros extends Modelo {
                 $copia = $result[0][0];
                 $sql = "update copias set est_id = 6 where cop_id= ".$copia.";";
                 if ($resultado = $conn->query($sql)) {
-                    $sql = "INSERT INTO reservas (res_ID,usu_ID,lib_ID,cop_id,fechaIni,fechaFin,realizada) 
-                        VALUES((select max(res_ID) + 1 from reservas res),".$usu.",".$libro.",".$copia.",sysdate(),DATE_ADD(CURDATE(), INTERVAL 3 DAY),0);";
+                    $sql = "INSERT INTO reservas (usu_ID,lib_ID,cop_id,fechaIni,fechaFin,realizada) 
+                        VALUES(".$usu.",".$libro.",".$copia.",sysdate(),DATE_ADD(CURDATE(), INTERVAL 3 DAY),0);";
                     if ($resultado = $conn->query($sql)) {
                         $res = "ok";
                     }
@@ -305,8 +302,8 @@ final class ModeloLibros extends Modelo {
                 $cop_id = $result[0][2];
                 $sql = "update copias set est_id = 3 where cop_id= ".$cop_id.";";
                 if ($resultado = $conn->query($sql)) {
-                    $sql = "INSERT INTO prestamos (usu_ID, res_ID, lib_ID, fechaIni, fechaFin) 
-                        VALUES(".$usu_id.",".$resID.",".$lib_id.",sysdate(),DATE_ADD(CURDATE(), INTERVAL ".DURACION_PRESTAMO." DAY));";
+                    $sql = "INSERT INTO prestamos (usu_ID, res_ID, lib_ID, cop_ID, fechaIni, fechaFin) 
+                        VALUES(".$usu_id.",".$resID.",".$lib_id.",".$cop_id.",sysdate(),DATE_ADD(CURDATE(), INTERVAL ".DURACION_PRESTAMO." DAY));";
                     if ($resultado = $conn->query($sql)) {
                         $sql = "update reservas set realizada = 1 where res_id= ".$resID.";";
                         if ($resultado = $conn->query($sql)) {
@@ -321,6 +318,97 @@ final class ModeloLibros extends Modelo {
         }
         else {
             $conn->rollback();
+        }
+       $this->desconectarBD($conn);
+       return $res;
+    }
+        public function addPrestamoSinRes($usu_id, $lib_id){        
+        $res = "err";
+        $result = array();  
+        $sql = "select cop_id from copias where lib_id = ".$lib_id." and est_id = 2 limit 1;";
+        $conn = $this->conectarBD();
+        $conn->begin_transaction();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $result = $resultado->fetch_all(MYSQLI_NUM);    
+                $copia = $result[0][0];
+                $sql = "update copias set est_id = 3 where cop_id= ".$copia.";";
+                if ($resultado = $conn->query($sql)) {
+                    $sql = "INSERT INTO prestamos (usu_ID, res_ID, lib_ID, cop_ID, fechaIni, fechaFin) 
+                        VALUES(".$usu_id.",null,".$lib_id.",".$copia.",sysdate(),DATE_ADD(CURDATE(), INTERVAL ".DURACION_PRESTAMO." DAY));";
+                    if ($resultado = $conn->query($sql)) {
+                        $res = "ok";    
+                    }
+                }
+            } 
+        } 
+        if ($res == "ok"){
+            $conn->commit();
+        }
+        else {
+            $conn->rollback();
+        }
+       $this->desconectarBD($conn);
+       return $res;
+    }
+    public function getPrestamosActivos(){
+        $sql = 'select p.pres_ID , p.usu_ID, p.lib_ID, p.cop_id, DATE_FORMAT(p.fechaIni, "%e/%m/%Y") as Desde, DATE_FORMAT(p.fechaFin, "%e/%m/%Y")as Hasta, l.aut_ID, l.nombre, a.nombreApe, u.nombreApe, c.copia
+                from prestamos p
+                inner join libros l on p.lib_id = l.lib_id 
+                inner join usuarios u on p.usu_id = u.usu_id
+                inner join autores a on l.aut_id = a.aut_id 
+                inner join copias c on p.cop_id = c.cop_id 
+                where devuelto = 0;';
+        $res = array();
+        $conn = $this->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $res = $resultado->fetch_all(MYSQLI_NUM);
+                $resultado->close();
+                } 
+            else {  
+                $res[] = "err";
+            }
+        }
+       $this->desconectarBD($conn);
+       return $res;
+    }
+    public function devolucion($lib_id,$copia){
+        $res = "err";
+        $sql = "select cop_id from copias where lib_id = ".$lib_id." and copia = ".$copia.";";
+        $conn = $this->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $result = $resultado->fetch_all(MYSQLI_NUM);    
+                $cop_id = $result[0][0];
+                $sql = "update prestamos set devuelto = 1 where lib_id = ".$lib_id." and cop_ID = ".$cop_id.";";
+                $conn->query($sql);
+                if ($conn->affected_rows > 0) {
+                    $res = "ok";
+                }
+            }    
+        } 
+       $this->desconectarBD($conn);
+       return $res;
+    }
+    public function getReservasActivas(){
+        $sql = 'select r.res_ID, r.usu_ID, r.lib_ID, r.cop_id, DATE_FORMAT(r.fechaIni, "%e/%m/%Y") as Desde, DATE_FORMAT(r.fechaFin, "%e/%m/%Y") as Hasta, l.lib_ID, l.aut_ID, l.nombre, u.nombreApe, a.nombreApe, c.copia, c.calle, c.pasillo, c.estante 
+                from reservas r
+                inner join libros l on r.lib_id = l.lib_id
+                inner join usuarios u on r.usu_id = u.usu_id
+                inner join autores a on l.aut_id = a.aut_id
+                inner join copias c on r.cop_id = c.cop_id
+                where realizada = 0;';
+        $res = array();
+        $conn = $this->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $res = $resultado->fetch_all(MYSQLI_NUM);
+                $resultado->close();
+                } 
+            else {  
+                $res[] = "err";
+            }
         }
        $this->desconectarBD($conn);
        return $res;

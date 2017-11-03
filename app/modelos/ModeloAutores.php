@@ -23,7 +23,7 @@ final class ModeloAutores extends Modelo {
        return $res;
     }
     public function addAutor($autor){
-        $sql = "insert into autores values((select max(aut_ID) + 1 from autores au),'".$autor->getNombreApe()."','".$autor->getNacionalidad()."',0);";
+        $sql = "insert into autores (nombreApe,nacionalidad,eliminado) values('".$autor->getNombreApe()."','".$autor->getNacionalidad()."',0);";
         $res = "err";
         $conn = $this->conectarBD();
         if ($resultado = $conn->query($sql)) {

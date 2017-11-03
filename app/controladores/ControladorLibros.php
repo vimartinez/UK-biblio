@@ -219,42 +219,16 @@ final class ControladorLibros extends Controlador {
         $res = $M->isbnAutocomplete($search);
         echo json_encode($res);
     }
-    /*public function prestamoRes($msg = null, $err = null) {
-        $template = file_get_contents('web/principal.html');
-        $scripts = '<script src="web/js/libros.js"></script>';
-        $V = new LibrosPrestamo($template, $scripts);
-        $V->setinfoUsu($_SESSION['datosUsu']);
-        if (isset($_POST["frmNro"])){
-            $soc_id = $_POST["frmNro"];
-            $soc_nombre = $_POST["frmNombreSocio"];
-            $MS = new ModeloSocios("");
-            $res = $MS->getSocio($soc_id,$soc_nombre);
-            if ($res[0]== "err"){
-                $V->setMensaje("No se encontró el socio en el sistema");
-            }
-            else {
-                $V->setData($res);
-                $res = $MS->getReservas($res[0][0]);
-                if ($res[0][0]!= ""){
-                    $V->setData2($res);
-                }
-            }
-        }
-        $MA = new ModeloAutores("");
-        $V->setData3($MA->getAutores());
-        if ($err) $V->setError($err);
-        if ($msg) $V->setMensaje($msg);
-        $V->mostrarHTML();
-    }*/
     public function addprestamo($msg = null, $err = null) {
-        $reserva = $_POST["id"];
+        $res = "";
         $M = new ModeloLibros("");
-        $res = $M->addPrestamoRes($reserva);
+        if (isset($_POST["id"])) $res = $M->addPrestamoRes($_POST["id"]);
+        if (isset($_POST["lib_id"])) $res = $M->addPrestamoSinRes($_POST["soc_id"],$_POST["lib_id"]);
+        
         $template = file_get_contents('web/principal.html');
         $scripts = '<script src="web/js/libros.js"></script>';
         $V = new LibrosPrestamo($template, $scripts);
         $V->setinfoUsu($_SESSION['datosUsu']);
-        echo $res;
         if ($err) $V->setError($err);
         if ($msg) $V->setMensaje($msg);
         if ($res == "ok"){
@@ -266,28 +240,20 @@ final class ControladorLibros extends Controlador {
         $V->mostrarHTML();
     }
     public function prestamo($msg = null, $err = null) {
+        $soc_id = "";
+        $soc_nombre = "";
         $libro = null;
         $resu = array();
         $template = file_get_contents('web/principal.html');
         $scripts = '<script src="web/js/libros.js"></script>';
         $V = new LibrosPrestamo($template, $scripts);
         $V->setinfoUsu($_SESSION['datosUsu']);
-        if(isset($_POST["frmAutor"])){
-            if ($_POST["frmAutor"]!=0  || $_POST["frmNombrelibro"]!=""){
-                $libro = new LibrosClass(0,$_POST["frmAutor"],1,"",$_POST["frmNombrelibro"],"","","",null);
-                $MP = new ModeloPrincipal("");
-                $resu = $MP->getCatalogo($libro);
-                if ($resu[0]== "err"){
-                $V->setMensaje("No se encontraron libros con el criterio ingresado");
-            }
-            else {
-                $V->setData4($resu);
-                }
-            }
-        }     
-        if (isset($_POST["frmNro"])){
-            $soc_id = $_POST["frmNro"];
-            $soc_nombre = $_POST["frmNombreSocio"];
+        
+        if (isset($_POST["frmNro"])) $soc_id = $_POST["frmNro"];
+        if (isset($_POST["frmNombreSocio"])) $soc_nombre = $_POST["frmNombreSocio"];
+        if (isset($_POST["soc_id"])) $soc_id = $_POST["soc_id"];
+          
+        if ($soc_id != "" || $soc_nombre != ""){
             $MS = new ModeloSocios("");
             $res = $MS->getSocio($soc_id,$soc_nombre);
             if ($res[0]== "err"){
@@ -301,8 +267,78 @@ final class ControladorLibros extends Controlador {
                 }
             }
         }
-        $MA = new ModeloAutores("");
-        $V->setData3($MA->getAutores());
+        if(isset($_POST["frmNombrelibro"])){
+            if ( $soc_id != ""){
+                $libro = new LibrosClass(0,"",1,"",$_POST["frmNombrelibro"],"","","",null);
+                $MP = new ModeloPrincipal("");
+                $resu = $MP->getCatalogo($libro);
+                if ($resu[0]== "err"){
+                $V->setMensaje("No se encontraron copias disponibles para el libro ingresado");
+            }
+            else {
+                $V->setData4($resu);
+                }
+            }
+            else {
+                $V->setMensaje("Debe ingresar un socio para generar un préstamo");
+            }
+        } 
+        if ($err) $V->setError($err);
+        if ($msg) $V->setMensaje($msg);
+        $V->mostrarHTML();
+    }
+    public function getPrestamosActivos($msg = null, $err = null) {
+        $template = file_get_contents('web/principal.html');
+        $scripts = '<script src="web/js/libros.js"></script>';
+        $M = new ModeloLibros("");
+        $res = $M->getPrestamosActivos();
+        $V = new LibrosPrestamosActivos($template, $scripts);
+        $V->setinfoUsu($_SESSION['datosUsu']);
+        if ($res[0]== "err"){
+                $V->setMensaje("No se encontraron el préstamos activos en el sistema");
+            }
+            else {
+                $V->setData($res);
+            }
+        if ($err) $V->setError($err);
+        if ($msg) $V->setMensaje($msg);
+        $V->mostrarHTML();
+    }
+    public function devolucion($msg = null, $err = null) {
+        $template = file_get_contents('web/principal.html');
+        $scripts = '<script src="web/js/libros.js"></script>';
+        $V = new LibrosDevolucion($template, $scripts);
+        $V->setinfoUsu($_SESSION['datosUsu']);
+        if ($err) $V->setError($err);
+        if ($msg) $V->setMensaje($msg);
+        $V->mostrarHTML();
+    }
+    public function devolucionDo() {
+        $lib_id = intval(substr($_POST["codLibro"], 0, 6));
+        $cop_id = intval(substr($_POST["codLibro"], 6, 3));
+ 
+        $M = new ModeloLibros("");
+        $res = $M->devolucion($lib_id,$cop_id);
+        if ($res == "ok"){
+            $this->devolucion("Se registró la devolución correctamente.",null);
+        }
+        else{
+            $this->devolucion(null, "No se pudo registrar la devolución del libro");
+        }
+    }
+    public function getReservasActivas($msg = null, $err = null) {
+        $template = file_get_contents('web/principal.html');
+        $scripts = '<script src="web/js/libros.js"></script>';
+        $M = new ModeloLibros("");
+        $res = $M->getReservasActivas();
+        $V = new LibrosReservasActivas($template, $scripts);
+        $V->setinfoUsu($_SESSION['datosUsu']);
+        if ($res[0]== "err"){
+                $V->setMensaje("No se encontraron el préstamos activos en el sistema");
+            }
+            else {
+                $V->setData($res);
+            }
         if ($err) $V->setError($err);
         if ($msg) $V->setMensaje($msg);
         $V->mostrarHTML();
@@ -310,3 +346,4 @@ final class ControladorLibros extends Controlador {
 }
 
 ?>
+    

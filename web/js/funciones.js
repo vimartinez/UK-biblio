@@ -84,6 +84,16 @@ $().ready(function () {
         $("#frmMenu #metodo").val("catalogo");
         $("#frmMenu").submit();
     });
+    $("#func-8").click(function () {
+        $("#frmMenu #controlador").val("ControladorLibros");
+        $("#frmMenu #metodo").val("getPrestamosActivos");
+        $("#frmMenu").submit();
+    });
+    $("#func-14").click(function () {
+        $("#frmMenu #controlador").val("ControladorLibros");
+        $("#frmMenu #metodo").val("getReservasActivas");
+        $("#frmMenu").submit();
+    });
     $("#textoDialogo").html("Está saliendo del sistema, ¿Desea continuar?");
     $("#dialog").dialog({
         modal: true, title: 'Aviso:', zIndex: 10000, autoOpen: false,

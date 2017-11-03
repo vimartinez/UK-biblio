@@ -138,15 +138,25 @@ $().ready(function () {
             $("#frmMenu #controlador").val("controladorLibros");
             $("#frmMenu #metodo").val("addPrestamo");
             $("#frmMenu #ID").val($(this).closest("tr").attr("id"));
-            $("#textoDialogo").html("Se generará el préstamo, ¿desea continuar?");
-            $('#dialog').dialog('open');
-            return;
-            
+            //$("#textoDialogo").html("Se generará el préstamo, ¿desea continuar?");
+            //$('#dialog').dialog('open');
+            //return;    
+            $("#frmMenu").submit();
+        }
+        if ($(this).children().first().attr('id') == "prestarLibroSinRes"){
+            $("#frmlibroPrest #controlador").val("controladorLibros");
+            $("#frmlibroPrest #metodo").val("addPrestamo");
+            $("#frmlibroPrest #lib_id").val($(this).closest("tr").attr("id"));
+            //$("#textoDialogo").html("Se generará el préstamo, ¿desea continuar?");
+           // $('#dialog').dialog('open');
+            $("#frmlibroPrest").submit();
+            //return;    
         }
     });
     $("#frmBuscarLibroPrest").click(function () {
         $("#frmlibroPrest #controlador").val("controladorLibros");
         $("#frmlibroPrest #metodo").val("prestamo");
-        $("#frmSocio").submit();
+        $("#frmlibroPrest").submit();
     });
+    $( "#codLibro" ).focus();    
 });

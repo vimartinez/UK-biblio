@@ -12,9 +12,12 @@ final class LibrosPrestamo extends Vista {
     $mensaje =  ($this->getMensaje() != "" ? $this->mostrarMensaje($this->getMensaje()) : "");
     $error = ($this->getError() != "" ? $this->mostrarError($this->getError()) : "");
     $tabla = "";
-    $datosSocio = "";
+    $datosSocio = "Debe ingresar datos del socio.";
     $reservasActivas = "";
+    $librosEncontrados = "";
+    $socId = "";
     if ($resultados != ""){
+        $socId = $resultados[0][0];
         $datosSocio = "  Socio:<b>" . $resultados[0][1] . "</b> DNI:" . $resultados[0][2];
         foreach ($resultados as $clave ) {
             if ($clave[7]!="" && $clave[11] < date()){
@@ -53,10 +56,27 @@ final class LibrosPrestamo extends Vista {
             }
    }
    if ($resultados4 != ""){
-       echo "<pre>";
-       echo print_r($resultados4, true);
-       echo "</pre>";
-       //die(__FILE__ . " " . __LINE__);
+       if (is_array($resultados4[0])){
+            $librosEncontrados = '<table style="width:800px" class="tabla-1" id="tablaLibrosPrest">
+                      <tr >
+                        <th>Nombre</th>
+                        <th>Autor</th>
+                        <th>Género</th>
+                        <th>Subgénero</th>
+                        <th>Editorial</th>
+                        <th>ISBN</th>
+                        <th>Disponibles</th>
+                        <th> </th>
+                        <th> </th>
+                      </tr>';
+             foreach ($resultados4 as $clave ) {
+                     $librosEncontrados = $librosEncontrados .' <tr style="cursor:pointer" id="'.$clave[0].'" ><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td>'.$clave[3].'</td><td>'.$clave[4].'</td><td>'.$clave[5].'</td><td>'.$clave[6].'</td><td>'.$clave[8].'</td><td><img src= ../web/img/book_go.png id="prestarLibroSinRes" title="Generar préstamo" style="cursor:pointer" ></img></td></tr>';
+                }
+             $librosEncontrados = $librosEncontrados . "</table>";
+            }
+        else{
+            $librosEncontrados = "<br>".$resultados4[0];
+        }
       }
     $diccionario = array(
         'areaTrabajo' => '
@@ -64,12 +84,12 @@ final class LibrosPrestamo extends Vista {
         <h2>Préstamo de Libros:</h2>             
          <p>
           <form id="frmSocio" method="post" action="index.php" >
-            <ul class="form-style-1">
+            <ul class="form-style-1" style="max-width: 800px;">
             {mensaje}{error}
                <li>
                    <label>Ingrese nombre o número de socio </span></label>
-                   <input type="text" id="frmNro" name="frmNro" class="field-triple" placeholder="Número Socio" />&nbsp;
-                   <input type="text" id="frmNombreSocio" name="frmNombreSocio" class="field-triple" placeholder="Nombre" />&nbsp;
+                   <input type="text" id="frmNro" name="frmNro" class="field-triple" placeholder="Número de Socio" />&nbsp;
+                   <input type="text" id="frmNombreSocio" name="frmNombreSocio" class="field-triple" placeholder="Nombre del Socio" />&nbsp;
                    <input type="submit" value="Buscar" id="frmBuscarSocio">
                     <input type="hidden" id="metodo" name="metodo" value="" >
                 <input type="hidden" id="controlador" name="controlador" value="" >
@@ -77,28 +97,26 @@ final class LibrosPrestamo extends Vista {
                 </ul>
                 </form>
                 <p id="reservas" >
-                <ul class="form-style-1">
-                <li>
-                       <label>Préstamo con reserva </label>
-                       {datosSocio}                    
+                <ul class="form-style-1" style="max-width: 800px;">
+                   <li>
+                    <label>Préstamo con reserva </label>
+                    {datosSocio}                    
                     {reservasActivas}
                     </li>
                 </ul>
                 </p>
                 <form id="frmlibroPrest" method="post" action="index.php" >
-                <ul class="form-style-1">
+                <ul class="form-style-1" style="max-width: 800px;">
                 <li>
-                       <label>Préstamo sin reserva <span class="required">*</span></label>
-                       <input type="text" id="frmNombrelibro" name="frmNombrelibro" class="field-triple" placeholder="Nombre libro" required />&nbsp;
-                        <select name="frmAutor" class="field-triple">
-                        <option value="0">Autor</option>
-                        {Autores}
-                        </select>&nbsp;
-                        <input type="submit" value="Buscar" id="frmBuscarLibroPrest">
-                    </li>
+                    <label>Préstamo sin reserva <span class="required">*</span></label>
+                    <input type="text" id="frmNombrelibro" name="frmNombrelibro" class="field-divided" placeholder="Nombre del Libro" required />&nbsp;
+                    <input type="submit" value="Buscar" id="frmBuscarLibroPrest"><br><br>
+                    {librosEncontrados}
+                </li>
                 <input type="hidden" id="metodo" name="metodo" value="" >
                 <input type="hidden" id="controlador" name="controlador" value="" >
-
+                <input type="hidden" id="soc_id" name="soc_id" value="{socId}" >
+                <input type="hidden" id="lib_id" name="lib_id" value="" >
             </ul>
             </form>
         </p>
@@ -106,11 +124,12 @@ final class LibrosPrestamo extends Vista {
     ',
         'mensajeError'      => $this->getMensaje(),
         'infoUsuario'       => $this->getinfoUsu(),
-        'Autores'           => $tabla,
         'mensaje'           => $mensaje, 
         'error'             => $error,
         'datosSocio'        => $datosSocio,
-        'reservasActivas'   => $reservasActivas
+        'reservasActivas'   => $reservasActivas,
+        'librosEncontrados' => $librosEncontrados,
+        'socId'             => $socId
 
     );
     foreach ($diccionario as $clave=>$valor){

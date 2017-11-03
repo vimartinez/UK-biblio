@@ -51,8 +51,8 @@ final class ModeloSocios extends Modelo {
         $this->desconectarBD($conn);
     }
     public function addSocio($socio){    
-        $sql = "INSERT INTO usuarios (usu_ID, perf_ID, nombreApe, login, clave, fechaAlta, fechaBaja, direccion, barrio, localidad, provincia, mail, dni, eliminado) "
-                . " VALUES ((select max(usu_ID) + 1 from usuarios u),'"
+        $sql = "INSERT INTO usuarios (perf_ID, nombreApe, login, clave, fechaAlta, fechaBaja, direccion, barrio, localidad, provincia, mail, dni, eliminado) "
+                . " VALUES ('"
                                 .$socio->getPerfil()."','"
                                 .$socio->getNombreApe()."','"
                                 .$socio->getLogin()."','"
