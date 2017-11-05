@@ -3,7 +3,7 @@
 final class ModeloSocios extends Modelo {
 
     public function getSocios(){
-        $sql = "SELECT u.usu_ID, u.nombreApe, u.direccion, u.barrio, u.localidad, p.provincia "
+        $sql = "SELECT u.usu_ID, u.nombreApe, u.direccion, u.barrio, u.localidad, p.provincia, u.login "
                 . " FROM usuarios u"
                 . " left join provincias p on u.provincia = p.id "
                 . "where perf_id=3 "
@@ -82,11 +82,11 @@ final class ModeloSocios extends Modelo {
        return $res;
     }
     public function getSocio($soc_id,$soc_nombre){      
-        $sql = "SELECT u.usu_ID, u.nombreApe, u.dni, u.direccion, u.barrio, u.localidad, p.provincia, s.san_id, s.pres_id, s.tip_id, s.fechaIni, s.fechafin 
+        $sql = 'SELECT u.usu_ID, u.nombreApe, u.dni, u.direccion, u.barrio, u.localidad, p.provincia, s.san_id, s.pres_id, s.tip_id, s.fechaIni, DATE_FORMAT(s.fechaFin, "%e/%m/%Y"), IF(fechafin  > curdate(), 1, 0) as activa 
                 FROM usuarios u 
                 left join provincias p on u.provincia = p.id 
                 left join sanciones s on u.usu_id = s.usu_id
-                where u.eliminado = 0 ";
+                where u.eliminado = 0 ';
         if ($soc_id != "") $sql = $sql . " and u.usu_ID =".$soc_id;
         if ($soc_nombre != "") $sql = $sql . " and u.nombreApe ='".$soc_nombre."';";
         $res = array();
@@ -121,7 +121,7 @@ final class ModeloSocios extends Modelo {
                 inner join libros l on r.lib_id = l.lib_id 
                 inner join autores a on l.aut_id = a.aut_id 
                 inner join copias c on l.lib_id = c.lib_id
-                where r.usu_id = 1 
+                where r.usu_id = '.$soc_id.' 
                 and r.fechaFin > sysdate() 
                 and r.realizada = 0
                 and r.cop_id = c.cop_id
@@ -135,6 +135,78 @@ final class ModeloSocios extends Modelo {
                 } 
             else {  
                 $res[0] = "No se encontraron reservas activas para este socio.";
+            }
+        }
+       $this->desconectarBD($conn);
+       return $res;
+    }
+    public function getSociosDeudores(){
+        $sql = 'select p.pres_ID , p.usu_ID, p.lib_ID, p.cop_id, DATE_FORMAT(p.fechaIni, "%e/%m/%Y") as Desde, DATE_FORMAT(p.fechaFin, "%e/%m/%Y")as Hasta, l.aut_ID, l.nombre, a.nombreApe, u.nombreApe, c.copia
+                from prestamos p
+                inner join libros l on p.lib_id = l.lib_id 
+                inner join usuarios u on p.usu_id = u.usu_id
+                inner join autores a on l.aut_id = a.aut_id 
+                inner join copias c on p.cop_id = c.cop_id 
+                where devuelto = 0
+                and TIMESTAMPDIFF(DAY, p.fechaFin, CURDATE()) >=1;';
+        $res = array();
+        $conn = $this->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $res = $resultado->fetch_all(MYSQLI_NUM);
+                $resultado->close();
+                } 
+            else {  
+                $res[0] = "err";
+            }
+        }
+       $this->desconectarBD($conn);
+       return $res;
+    }
+    public function addSancion($soc_id, $diasSancion){
+        $res = "err";
+        $conn = $this->conectarBD();
+        $sql = 'INSERT INTO sanciones
+                (pres_ID,tip_ID,usu_ID,fechaIni,fechaFin)
+                VALUES(null,1,'.$soc_id.',sysdate(),DATE_ADD(CURDATE(), INTERVAL '.$diasSancion.' DAY));';
+        $conn->query($sql);
+        if ($conn->affected_rows > 0) {
+            $res = "ok";
+        }
+       $this->desconectarBD($conn);
+       return $res;
+    }
+    public function getUsuarios(){
+        $sql = "SELECT u.usu_ID, u.nombreApe, u.direccion, u.barrio, u.localidad, p.provincia, u.login, pe.nombre 
+                 FROM usuarios u 
+                 inner join perfiles pe on u.perf_id = pe.perf_id 
+                 left join provincias p on u.provincia = p.id 
+                where  u.eliminado =0;";
+        $res = array();
+        $conn = $this->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $res = $resultado->fetch_all(MYSQLI_NUM);
+                $resultado->close();
+                } 
+            else {  
+                $res[0] = "err";
+            }
+        }
+       $this->desconectarBD($conn);
+       return $res;
+    }
+    public function getPerfiles(){
+        $sql = "select perf_id, nombre from perfiles order by 1";
+        $res = array();
+        $conn = $this->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            if($resultado->num_rows>0){
+                $res = $resultado->fetch_all(MYSQLI_NUM);
+                $resultado->close();
+                } 
+            else {  
+                $res[] = "err";
             }
         }
        $this->desconectarBD($conn);

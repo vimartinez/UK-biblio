@@ -11,7 +11,13 @@ public function mostrarHTML() {
     $tabla = "";
     if ($resultados != null){
         foreach ($resultados as $clave ) {
+            if ($this->getinfoUsu()!= ""){
                  $tabla = $tabla .' <tr style="cursor:pointer" id="'.$clave[0].'" ><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td>'.$clave[3].'</td><td>'.$clave[4].'</td><td>'.$clave[5].'</td><td>'.$clave[6].'</td><td>'.$clave[8].'</td><td><img src= ../web/img/book_open.png id="detalleLibro" title="Ver Detalles" style="cursor:pointer" ></img></td><td><img src= ../web/img/book_go.png id="reservaLibro" title="Reservar libro" style="cursor:pointer" ></img></td></tr>';
+            }
+            else 
+                {
+                $tabla = $tabla .' <tr style="cursor:pointer" id="'.$clave[0].'" ><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td>'.$clave[3].'</td><td>'.$clave[4].'</td><td>'.$clave[5].'</td><td>'.$clave[6].'</td><td>'.$clave[8].'</td><td><img src= ../web/img/book_open.png id="detalleLibro" title="Ver Detalles" style="cursor:pointer" ></img></td></tr>';
+                }   
             }
     }
     $resultados2 =  $this->getData2();

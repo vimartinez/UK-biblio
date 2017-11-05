@@ -323,7 +323,7 @@ final class ControladorLibros extends Controlador {
             $this->devolucion("Se registró la devolución correctamente.",null);
         }
         else{
-            $this->devolucion(null, "No se pudo registrar la devolución del libro");
+            $this->devolucion("No se encontraron libros prestados con el código ingresado",null);
         }
     }
     public function getReservasActivas($msg = null, $err = null) {

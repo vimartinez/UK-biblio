@@ -29,7 +29,7 @@ final class ControladorPrincipal extends Controlador {
         $template = file_get_contents('web/principal.html');
         $scripts = '<script src="web/js/catalogo.js"></script>';
         $V = new Catalogo($template, $scripts);
-        $V->setinfoUsu($_SESSION['datosUsu']);
+        if(isset($_SESSION['datosUsu'])) $V->setinfoUsu($_SESSION['datosUsu']);
         $MA = new ModeloAutores("");
         $V->setData2($MA->getAutores());
         if ($res[0] == "err"){

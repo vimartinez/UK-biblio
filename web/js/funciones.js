@@ -89,6 +89,21 @@ $().ready(function () {
         $("#frmMenu #metodo").val("getPrestamosActivos");
         $("#frmMenu").submit();
     });
+    $("#func-9").click(function () {
+        $("#frmMenu #controlador").val("ControladorSocios");
+        $("#frmMenu #metodo").val("getSociosDeudores");
+        $("#frmMenu").submit();
+    });
+    $("#func-11").click(function () {
+        $("#frmMenu #controlador").val("ControladorSocios");
+        $("#frmMenu #metodo").val("addSancion");
+        $("#frmMenu").submit();
+    });
+    $("#func-12").click(function () {
+        $("#frmMenu #controlador").val("ControladorSocios");
+        $("#frmMenu #metodo").val("gestionUsuarios");
+        $("#frmMenu").submit();
+    });
     $("#func-14").click(function () {
         $("#frmMenu #controlador").val("ControladorLibros");
         $("#frmMenu #metodo").val("getReservasActivas");

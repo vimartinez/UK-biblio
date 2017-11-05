@@ -158,5 +158,13 @@ $().ready(function () {
         $("#frmlibroPrest #metodo").val("prestamo");
         $("#frmlibroPrest").submit();
     });
-    $( "#codLibro" ).focus();    
+    $( "#codLibro" ).focus();  
+    $("#tablaPrestamosActivos td").click(function () {  
+        if ($(this).children().first().attr('id') == "sancionSocio"){
+            $("#frmMenu #controlador").val("controladorSocios");
+            $("#frmMenu #metodo").val("addSancion");
+            $("#frmMenu #ID").val($(this).closest("tr").attr("id")); 
+            $("#frmMenu").submit();
+        }
+    });
 });

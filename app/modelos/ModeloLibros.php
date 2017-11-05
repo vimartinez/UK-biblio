@@ -352,7 +352,7 @@ final class ModeloLibros extends Modelo {
        return $res;
     }
     public function getPrestamosActivos(){
-        $sql = 'select p.pres_ID , p.usu_ID, p.lib_ID, p.cop_id, DATE_FORMAT(p.fechaIni, "%e/%m/%Y") as Desde, DATE_FORMAT(p.fechaFin, "%e/%m/%Y")as Hasta, l.aut_ID, l.nombre, a.nombreApe, u.nombreApe, c.copia
+        $sql = 'select p.pres_ID , p.usu_ID, p.lib_ID, p.cop_id, DATE_FORMAT(p.fechaIni, "%e/%m/%Y") as Desde, DATE_FORMAT(p.fechaFin, "%e/%m/%Y")as Hasta, l.aut_ID, l.nombre, a.nombreApe, u.nombreApe, c.copia, IF(p.fechafin  < curdate(), 1, 0) as activa
                 from prestamos p
                 inner join libros l on p.lib_id = l.lib_id 
                 inner join usuarios u on p.usu_id = u.usu_id

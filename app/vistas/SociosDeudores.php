@@ -1,5 +1,5 @@
 <?php
-final class LibrosPrestamosActivos extends Vista {
+final class SociosDeudores extends Vista {
 
 public function mostrarHTML() {
 
@@ -10,22 +10,14 @@ public function mostrarHTML() {
     
     if ($resultados != ""){
         foreach ($resultados as $clave ) {
-            switch ($clave[11]) {
-                    case "1":
-                        $color = "#EBBAB5";
-                        break;
-                    default:
-                        $color = "#FFFFFF";
-                        break;
-               }
-             $tabla = $tabla .' <tr style="cursor:pointer" id="'.$clave[1].'" bgcolor='.$color.' ><td>'.$clave[1].'</td><td>'.$clave[9].'</td><td>'.$clave[2].'-'.$clave[7].'</td><td>'.$clave[8].'</td><td>'.$clave[10].'</td><td>'.$clave[4].'</td><td>'.$clave[5].'</td><td><img src= ../web/img/user_delete.png id="sancionSocio" title="Sancionar Socio" style="cursor:pointer"  ></img></td></tr>';
-        }
+                 $tabla = $tabla .' <tr style="cursor:pointer" id="'.$clave[1].'" ><td>'.$clave[1].'</td><td>'.$clave[9].'</td><td>'.$clave[2].'-'.$clave[7].'</td><td>'.$clave[8].'</td><td>'.$clave[10].'</td><td>'.$clave[4].'</td><td>'.$clave[5].'</td><td><img src= ../web/img/user_delete.png id="sancionSocio" title="Sancionar Socio" style="cursor:pointer"  ></img></td></tr>';
+            }
     }
 
     $diccionario = array(
         'areaTrabajo' => '
             <div class="box">
-        <h2>Reporte de préstamos:</h2>             
+        <h2>Reporte de socios deudores:</h2>             
          <p >
              <table style="width:80%" class="tabla-1" id="tablaPrestamosActivos">
              {mensaje}{error}

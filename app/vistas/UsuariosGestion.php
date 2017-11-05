@@ -1,5 +1,5 @@
 <?php
-final class SociosGestion extends Vista {
+final class UsuariosGestion extends Vista {
     
 protected $mensaje="";
 
@@ -12,7 +12,7 @@ public function mostrarHTML() {
         $primero = true;
         foreach ($resultados as $clave ) {
             if ($primero){
-                $tabla = $tabla .' <tr style="cursor:pointer" id="'.$clave[0].'" ><td>'.$clave[0].'</td><td>'.$clave[1].'</td><td>'.$clave[6].'</td><td>'.$clave[2].'</td><td>'.$clave[3].'</td><td>'.$clave[4].'</td><td>'.$clave[5].'</td><td><img src= ../web/img/delete.png id="delLibro" title="Eliminar socio" style="cursor:pointer" alt="X" ></img></td></tr>';
+                $tabla = $tabla .' <tr style="cursor:pointer" id="'.$clave[0].'" ><td>'.$clave[0].'</td><td>'.$clave[1].'</td><td>'.$clave[6].'</td><td>'.$clave[2].'</td><td>'.$clave[7].'</td><td>'.$clave[3].'</td><td>'.$clave[4].'</td><td>'.$clave[5].'</td><td><img src= ../web/img/delete.png id="delUsuario" title="Eliminar socio" style="cursor:pointer" alt="X" ></img></td></tr>';
             }
             else {
                  $tabla = $tabla .'<li ><a href="#" title="'.$clave[2].'">'.$clave[1].'</a></li>';
@@ -26,16 +26,17 @@ public function mostrarHTML() {
         $diccionario = array(
             'areaTrabajo' => '
                 <div class="box">
-                    <h2>Gestión de socios:</h2>             
+                    <h2>Gestión de usuarios:</h2>             
                     <p>
-                        Listado de socios <br />
+                        Listado de usuarios <br />
                     </p> 
                     {mensaje}{error}
-                    <table style="width:80%" class="tabla-1" id="tablaSocios">
+                    <table style="width:80%" class="tabla-1" id="tablaUsuarios">
                     <tr >
                         <th>Número</th>
                         <th>Nombre</th>
                         <th>Login</th>
+                        <th>Perfil</th>
                         <th>Dirección</th>
                         <th>Barrio</th>
                         <th>Localidad</th>
@@ -46,14 +47,14 @@ public function mostrarHTML() {
                 '</table>
                 <ul class="form-style-1">
                 <li>
-                    <input type="button" value="Nuevo Socio" id="frmNuevoSocio">
+                    <input type="button" value="Nuevo Usuario" id="frmNuevoUsuario">
                     <input type="button" value="Volver" id="frmVolverStaff">
                 </li>
                  </ul>
                 </div>
                 ',
-            'mensajeError' => $this->getMensaje(),
-            'infoUsuario' => $this->getinfoUsu(),
+            'mensajeError'  => $this->getMensaje(),
+            'infoUsuario'   => $this->getinfoUsu(),
             'mensaje'       => $mensaje, 
             'error'         => $error
         );

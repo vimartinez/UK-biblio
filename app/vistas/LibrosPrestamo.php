@@ -20,8 +20,8 @@ final class LibrosPrestamo extends Vista {
         $socId = $resultados[0][0];
         $datosSocio = "  Socio:<b>" . $resultados[0][1] . "</b> DNI:" . $resultados[0][2];
         foreach ($resultados as $clave ) {
-            if ($clave[7]!="" && $clave[11] < date()){
-                $datosSocio = $datosSocio ."<br>SOCIO CON SANCIONES ACTIVAS - NO PUEDE SOLICITAR PRÉSTAMOS";
+            if ($clave[12] == 1){
+                $datosSocio = $datosSocio .'<br><span class="required">SOCIO CON SANCIÓN ACTIVA HASTA EL '.$clave[11].' - NO PUEDE SOLICITAR PRÉSTAMOS</span>';
                 }
             }
     }
