@@ -377,6 +377,7 @@ final class ModeloLibros extends Modelo {
         $res = "err";
         $sql = "select cop_id from copias where lib_id = ".$lib_id." and copia = ".$copia.";";
         $conn = $this->conectarBD();
+        $conn->begin_transaction();
         if ($resultado = $conn->query($sql)) {
             if($resultado->num_rows>0){
                 $result = $resultado->fetch_all(MYSQLI_NUM);    
@@ -384,10 +385,20 @@ final class ModeloLibros extends Modelo {
                 $sql = "update prestamos set devuelto = 1 where lib_id = ".$lib_id." and cop_ID = ".$cop_id.";";
                 $conn->query($sql);
                 if ($conn->affected_rows > 0) {
-                    $res = "ok";
+                    $sql = "update copias set est_id = 2 where cop_ID = ".$cop_id.";";
+                    $conn->query($sql);
+                    if ($conn->affected_rows > 0) {
+                        $res = "ok";
+                    }
                 }
             }    
         } 
+        if ($res == "ok"){
+            $conn->commit();
+        }
+        else {
+            $conn->rollback();
+        }
        $this->desconectarBD($conn);
        return $res;
     }
@@ -398,7 +409,8 @@ final class ModeloLibros extends Modelo {
                 inner join usuarios u on r.usu_id = u.usu_id
                 inner join autores a on l.aut_id = a.aut_id
                 inner join copias c on r.cop_id = c.cop_id
-                where realizada = 0;';
+                where realizada = 0 
+                and eliminada = 0;';
         $res = array();
         $conn = $this->conectarBD();
         if ($resultado = $conn->query($sql)) {
@@ -410,6 +422,16 @@ final class ModeloLibros extends Modelo {
                 $res[] = "err";
             }
         }
+       $this->desconectarBD($conn);
+       return $res;
+    }
+    public function delReserva($idRes){
+        $sql = "update reservas set eliminada = 1 where res_id = ".$idRes." ;";
+        $res = "err";
+        $conn = $this->conectarBD();
+        if ($resultado = $conn->query($sql)) {
+            $res = "ok";
+            } 
        $this->desconectarBD($conn);
        return $res;
     }

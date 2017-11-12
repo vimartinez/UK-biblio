@@ -9,6 +9,7 @@ final class LibrosPrestamo extends Vista {
     $resultados2 =  $this->getData2();
     $resultados3 =  $this->getData3();
     $resultados4 =  $this->getData4();
+    $inhabilitado = false;
     $mensaje =  ($this->getMensaje() != "" ? $this->mostrarMensaje($this->getMensaje()) : "");
     $error = ($this->getError() != "" ? $this->mostrarError($this->getError()) : "");
     $tabla = "";
@@ -21,6 +22,7 @@ final class LibrosPrestamo extends Vista {
         $datosSocio = "  Socio:<b>" . $resultados[0][1] . "</b> DNI:" . $resultados[0][2];
         foreach ($resultados as $clave ) {
             if ($clave[12] == 1){
+                $inhabilitado = true;
                 $datosSocio = $datosSocio .'<br><span class="required">SOCIO CON SANCIÓN ACTIVA HASTA EL '.$clave[11].' - NO PUEDE SOLICITAR PRÉSTAMOS</span>';
                 }
             }
@@ -42,7 +44,13 @@ final class LibrosPrestamo extends Vista {
                         <th> </th>
                       </tr>';
              foreach ($resultados2 as $clave ) {
+                 if($inhabilitado){
+                     $reservasActivas = $reservasActivas .' <tr style="cursor:pointer" id="'.$clave[0].'" ><td>'.$clave[0].'</td><td>'.$clave[6].'</td><td>'.$clave[10].'</td><td>'.$clave[5].'</td><td>'.$clave[11].'</td><td>'.$clave[4].'</td><td>'.$clave[12].'</td><td>'.$clave[13].'</td><td>'.$clave[14].'</td><td><img src= ../web/img/delete.png id="prestamoLibro" title="Eliminar reserva" style="cursor:pointer" ></img></td></tr>';
+                 }
+                 else {
                      $reservasActivas = $reservasActivas .' <tr style="cursor:pointer" id="'.$clave[0].'" ><td>'.$clave[0].'</td><td>'.$clave[6].'</td><td>'.$clave[10].'</td><td>'.$clave[5].'</td><td>'.$clave[11].'</td><td>'.$clave[4].'</td><td>'.$clave[12].'</td><td>'.$clave[13].'</td><td>'.$clave[14].'</td><td><img src= ../web/img/book_go.png id="prestarLibro" title="Generar préstamo" style="cursor:pointer" ></img></td><td><img src= ../web/img/delete.png id="prestamoLibro" title="Eliminar reserva" style="cursor:pointer" ></img></td></tr>';
+                 }
+                     
                 }
              $reservasActivas = $reservasActivas . "</table>";
             }
@@ -70,7 +78,12 @@ final class LibrosPrestamo extends Vista {
                         <th> </th>
                       </tr>';
              foreach ($resultados4 as $clave ) {
+                 if($inhabilitado){
+                     $librosEncontrados = $librosEncontrados .' <tr style="cursor:pointer" id="'.$clave[0].'" ><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td>'.$clave[3].'</td><td>'.$clave[4].'</td><td>'.$clave[5].'</td><td>'.$clave[6].'</td><td>'.$clave[8].'</td></tr>';
+                 }
+                 else {
                      $librosEncontrados = $librosEncontrados .' <tr style="cursor:pointer" id="'.$clave[0].'" ><td>'.$clave[1].'</td><td>'.$clave[2].'</td><td>'.$clave[3].'</td><td>'.$clave[4].'</td><td>'.$clave[5].'</td><td>'.$clave[6].'</td><td>'.$clave[8].'</td><td><img src= ../web/img/book_go.png id="prestarLibroSinRes" title="Generar préstamo" style="cursor:pointer" ></img></td></tr>';
+                 }
                 }
              $librosEncontrados = $librosEncontrados . "</table>";
             }

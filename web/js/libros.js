@@ -167,4 +167,13 @@ $().ready(function () {
             $("#frmMenu").submit();
         }
     });
+    $("#ResrvasActivas td").click(function () {  
+        if ($(this).children().first().attr('id') == "eliminarReserva"){
+            $("#frmMenu #controlador").val("controladorLibros");
+            $("#frmMenu #metodo").val("delReserva");
+            $("#frmMenu #ID").val($(this).closest("tr").attr("id"));
+            $("#frmMenu").submit();
+            return;
+        }
+    });
 });

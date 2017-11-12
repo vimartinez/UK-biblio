@@ -343,6 +343,17 @@ final class ControladorLibros extends Controlador {
         if ($msg) $V->setMensaje($msg);
         $V->mostrarHTML();
     }
+    public function delReserva() {
+        $resID = $_POST["id"];
+        $M = new ModeloLibros("");
+        $res = $M->delReserva($resID);
+        if ($res == "ok"){
+            $this->getReservasActivas("Se elimió la reserva correctamente.",null);
+        }
+        else{
+            $this->getReservasActivas(null, "No se pudo eliminar la reserva");
+        } 
+    }
 }
 
 ?>
